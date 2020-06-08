@@ -1,40 +1,44 @@
 package io.github.pameladilly.domain.entity;
 
+import io.github.pameladilly.domain.enums.TipoTransacao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Table(name = "TRANSACAO")
+@Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 public class Transacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IDTRANSACAO")
-    private Integer idTransacao;
+    private Long idTransacao;
 
-    @Column(name = "DATA")
+    @Column(precision = 5, scale = 3)
+    private BigDecimal valorUnitario;
+
+    @Column(precision = 4, scale = 2)
+    private BigDecimal quantidade;
+
+    @Column(precision = 10, scale = 3)
+    private BigDecimal total;
+
     private LocalDateTime data;
 
-    @Column(name = "TOTAL", precision = 18, scale = 2)
-    private Double total;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TipoTransacao", length = 30)
+    private TipoTransacao tipoTransacao;
 
-    @Column(name = "VALORUNITARIO", precision = 18, scale = 2)
-    private Double valorUnitario;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idAtivo")
+    private Ativo ativo;
 
-    @Column(name = "QUANTIDADE", precision = 8, scale = 2)
-    private Double quantidade;
-
-    @Column(name = "IDATIVO")
-    private Integer idAtivo;
-
-    @JoinColumn(name = "IDUSUARIO")
-    @ManyToOne
-    private Usuario usuario;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idCarteira")
+    private Carteira carteira;
 
 }

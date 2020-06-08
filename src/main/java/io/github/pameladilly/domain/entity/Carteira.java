@@ -1,35 +1,38 @@
 package io.github.pameladilly.domain.entity;
 
-import lombok.AllArgsConstructor;
+
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Table(name = "CARTEIRA")
+@Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class Carteira {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IDCARTEIRA")
-    private Integer idCarteira;
+    private Long idCarteira;
 
-    @Column(name = "DESCRICAO")
+    @Column(length = 120)
     private String descricao;
 
-    @Column(name = "RENTABILIDADE")
-    private Double rentabilidade;
+    private LocalDateTime dataCadastro;
 
-    @Column(name = "ULTIMAATUALIZACAO")
-    private LocalDateTime ultimaAtualizacao;
+    @Column(precision = 6, scale = 2)
+    private BigDecimal rentabilidade;
 
-    @ManyToOne
-    @JoinColumn(name = "IDUSUARIO")
+    private LocalDateTime ultimaAtualizacao ;
+
+    @OneToOne
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @OneToMany(mappedBy = "carteira", fetch = FetchType.LAZY)
+    private List<Transacao> transacoes;
 
 }
