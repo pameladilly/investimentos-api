@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "idAtivo")
-@DiscriminatorValue("RENDAFIXA")
 @Getter
 @Setter
 public class RendaFixa extends Ativo {

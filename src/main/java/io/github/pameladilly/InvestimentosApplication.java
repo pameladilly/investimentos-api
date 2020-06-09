@@ -18,7 +18,7 @@ import java.util.Optional;
 public class InvestimentosApplication {
 
 
-    @Bean
+ /*   @Bean
     public CommandLineRunner init(Usuarios repository) {
         return  args -> {
             Usuario user = Usuario.builder()
@@ -45,7 +45,7 @@ public class InvestimentosApplication {
         };
 
 
-    }
+    }*/
     public static void main(String[] args) {
 
         SpringApplication.run(InvestimentosApplication.class, args);

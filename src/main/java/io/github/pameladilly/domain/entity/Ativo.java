@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "tipoAtivo", discriminatorType = DiscriminatorType.STRING, length = 30)
 @Data
 @AllArgsConstructor
 public  class Ativo {
