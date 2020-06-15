@@ -1,12 +1,13 @@
 package io.github.pameladilly.rest.controller;
 
 import io.github.pameladilly.domain.entity.Usuario;
-import io.github.pameladilly.rest.dto.CredenciaisDTO;
-import io.github.pameladilly.rest.dto.UsuarioDTO;
-import io.github.pameladilly.service.impl.UsuarioServiceImpl;
+import io.github.pameladilly.rest.dto.CredenciaisRequestDTO;
+import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
+import io.github.pameladilly.rest.dto.UsuarioResponseDTO;
+import io.github.pameladilly.service.UsuarioService;
 import io.swagger.annotations.*;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,14 +15,15 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@RequiredArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioServiceImpl usuarioService;
+    final ModelMapper modelMapper;
 
-    public UsuarioController(UsuarioServiceImpl usuarioService) {
+    final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
+        this.modelMapper = new ModelMapper();
     }
 
     @PostMapping(produces = "application/json", consumes = "application/json")
@@ -31,9 +33,13 @@ public class UsuarioController {
             @ApiResponse(code = 201, message = "Usuário cadastrado"),
             @ApiResponse(code = 400, message = "Dados inválidos")
     })
-    public Usuario salvar(@RequestBody @Valid UsuarioDTO usuarioDTO) {
+    public UsuarioResponseDTO salvar(@RequestBody @Valid UsuarioRequestDTO usuarioRequestDTO) {
+        Usuario usuario;
 
-        return usuarioService.salvar(usuarioDTO);
+        usuario = usuarioService.salvar(usuarioRequestDTO);
+
+
+        return modelMapper.map(usuario, UsuarioResponseDTO.class);
     }
 
     @PostMapping("/auth")
@@ -41,14 +47,60 @@ public class UsuarioController {
     @ApiOperation("Autenticar usuário")
     @ApiResponses( {
             @ApiResponse(code = 200, message = "Usuário autenticado" ),
-            @ApiResponse(code = 403, message = "Senha inválida"),
+            @ApiResponse(code = 401, message = "Senha inválida"),
             @ApiResponse(code = 404, message = "Usuário não encontrado na base de dados"),
 
 
     })
-    public Usuario autenticar(@RequestBody CredenciaisDTO credenciaisDTO) {
+    public UsuarioResponseDTO autenticar(@RequestBody CredenciaisRequestDTO credenciaisRequestDTO) {
 
-        return usuarioService.carregar(credenciaisDTO.getLogin(), credenciaisDTO.getSenha());
+        Usuario usuario = usuarioService
+                            .carregar(credenciaisRequestDTO.getLogin(), credenciaisRequestDTO.getSenha());
+
+        return modelMapper.map(usuario, UsuarioResponseDTO.class);
 
     }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Atualizar dados do usuário")
+    @ApiResponses( {
+            @ApiResponse(code = 200, message = "Dados atualizados."),
+            @ApiResponse(code = 404, message = "Erro. Verificar mensagem de retorno.")
+
+    })
+    public UsuarioResponseDTO atualizar(@PathVariable Long id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
+
+        Usuario usuario = usuarioService.atualizar(id, usuarioRequestDTO);
+
+        return modelMapper.map(usuario, UsuarioResponseDTO.class);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Excluir conta do usuário")
+    @ApiResponses( {
+            @ApiResponse(code = 204 , message = "Exclusão realizada" ),
+            @ApiResponse(code = 404, message = "Erro. Verificar mensagem de retorno.")
+    })
+    public void excluir(@PathVariable Long id){
+
+        usuarioService.excluir(id);
+    }
+
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Consultar dados do usuário")
+    @ApiResponses( {
+            @ApiResponse(code = 200, message = "Consulta realizada"),
+            @ApiResponse(code = 404, message = "Erro. Verificar mensagem de retorno.")
+
+    })
+    public UsuarioResponseDTO getUsuarioById(@PathVariable Long id) {
+        Usuario usuario = usuarioService.getUsuarioById(id);
+
+        return modelMapper.map(usuario, UsuarioResponseDTO.class);
+
+    }
+
 }

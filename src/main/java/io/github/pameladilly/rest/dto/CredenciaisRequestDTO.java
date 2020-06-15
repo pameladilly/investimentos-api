@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 @ApiModel(description = "Credencias DTO")
-public class CredenciaisDTO {
+public class CredenciaisRequestDTO {
 
     @ApiModelProperty(dataType = "String", value = "Login do usuário")
     private String login;

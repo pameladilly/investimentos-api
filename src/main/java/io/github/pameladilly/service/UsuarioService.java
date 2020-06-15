@@ -1,15 +1,20 @@
 package io.github.pameladilly.service;
 
 import io.github.pameladilly.domain.entity.Usuario;
-import io.github.pameladilly.rest.dto.UsuarioDTO;
+import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
 
 public interface UsuarioService {
 
-    Usuario salvar(UsuarioDTO usuarioDTO);
+    Usuario salvar(UsuarioRequestDTO usuarioRequestDTO);
 
-    Usuario atualizar(Integer idUsuario, UsuarioDTO usuarioDTO);
+    Usuario atualizar(Long id, UsuarioRequestDTO usuarioRequestDTO);
 
-    Boolean alterarSenha(String senha, String senhaConfirmacao);
+    Boolean alterarSenha(Long id, String senha, String senhaConfirmacao);
 
     Usuario carregar(String login, String senha);
+
+    void excluir(Long id);
+
+    Usuario getUsuarioById(Long id);
+
 }

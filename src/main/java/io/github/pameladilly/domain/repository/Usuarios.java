@@ -8,9 +8,10 @@ import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Repository
-public interface Usuarios extends JpaRepository<Usuario, Integer>{
+public interface Usuarios extends JpaRepository<Usuario, Long>{
 
    // Optional<Usuario> findByEmail(String email);
+
 
     Optional<Usuario> findByLogin(String login);
 }

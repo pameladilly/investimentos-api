@@ -5,56 +5,67 @@ import io.github.pameladilly.domain.repository.Usuarios;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.exception.usuario.SenhaInvalidaException;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
-import io.github.pameladilly.rest.dto.UsuarioDTO;
+import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
 import io.github.pameladilly.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-    @Autowired
-    private Usuarios repository;
+  //  @Autowired
+    final Usuarios repository;
 
+    public UsuarioServiceImpl(Usuarios repository) {
+        this.repository = repository;
+    }
 
     @Override
-    public Usuario salvar(UsuarioDTO usuarioDTO) {
-        if(!usuarioDTO.getSenha().equals(usuarioDTO.getSenhaConfirmacao())) {
+    public Usuario salvar(UsuarioRequestDTO usuarioRequestDTO)    {
+        if(!usuarioRequestDTO.getSenha().equals(usuarioRequestDTO.getSenhaConfirmacao())) {
             throw new SenhasNaoConferemException();
         }
 
-        Usuario usuario = converter(usuarioDTO);
+        Usuario usuario = converter(usuarioRequestDTO);
         usuario.setDataCadastro(  LocalDateTime.now() );
         return repository.save(usuario);
 
     }
 
     @Override
-    public Usuario atualizar(Integer idUsuario, UsuarioDTO usuarioDTO) {
-        if(!usuarioDTO.getSenha().equals(usuarioDTO.getSenhaConfirmacao())) {
+    public Usuario atualizar(Long id, UsuarioRequestDTO usuarioRequestDTO) {
+        if(!usuarioRequestDTO.getSenha().equals(usuarioRequestDTO.getSenhaConfirmacao())) {
             throw new SenhasNaoConferemException();
         }
-        return repository.findById(idUsuario).map(
+        Usuario usuario = repository.findById(id).map(
                 user -> {
-                    user.setSenha(usuarioDTO.getSenha());
-                    user.setNome(usuarioDTO.getNome());
-                    user.setEmail(usuarioDTO.getEmail());
-                    user.setLogin(usuarioDTO.getLogin());
+                    user.setSenha(usuarioRequestDTO.getSenha());
+                    user.setNome(usuarioRequestDTO.getNome());
+                    user.setEmail(usuarioRequestDTO.getEmail());
+                    user.setLogin(usuarioRequestDTO.getLogin());
 
                     return user;
                 }).orElseThrow(
-                () ->new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado na base de dados.")
+                    UsuarioNotFoundException::new
         );
+
+        return repository.save(usuario);
+
     }
 
 
     @Override
-    public Boolean alterarSenha(String senha, String senhaConfirmacao) {
-        return null;
+    public Boolean alterarSenha(Long id, String senha, String senhaConfirmacao) {
+        if (!senha.equals(senhaConfirmacao)) {
+            throw new SenhasNaoConferemException();
+        }
+
+        Usuario usuario = repository.findById(id).orElseThrow( UsuarioNotFoundException::new);
+
+        usuario.setSenha(senha);
+
+        return (repository.save(usuario) != null);
     }
 
     @Override
@@ -70,12 +81,26 @@ public class UsuarioServiceImpl implements UsuarioService {
         );
     }
 
-    private Usuario converter(UsuarioDTO usuarioDTO) {
+    @Override
+    public void excluir(Long id) {
+
+         repository.deleteById(id);
+
+    }
+
+    @Override
+    public Usuario getUsuarioById(Long id) {
+
+        return repository.findById(id).orElseThrow(UsuarioNotFoundException::new);
+    }
+
+
+    private Usuario converter(UsuarioRequestDTO usuarioRequestDTO) {
         return Usuario.builder()
-                    .email(usuarioDTO.getEmail())
-                    .nome(usuarioDTO.getNome())
-                    .login(usuarioDTO.getLogin())
-                    .senha(usuarioDTO.getSenha())
+                    .email(usuarioRequestDTO.getEmail())
+                    .nome(usuarioRequestDTO.getNome())
+                    .login(usuarioRequestDTO.getLogin())
+                    .senha(usuarioRequestDTO.getSenha())
                     .build();
     }
 }

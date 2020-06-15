@@ -1,9 +1,10 @@
 package io.github.pameladilly.rest.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+import springfox.documentation.annotations.ApiIgnore;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,8 @@ import java.rmi.MarshalException;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UsuarioDTO {
+public class UsuarioRequestDTO {
+
 
     @NotEmpty(message = "Informe o nome.")
     private String nome;
