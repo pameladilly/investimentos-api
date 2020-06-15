@@ -4,12 +4,11 @@ Aplicação para controle patrimonial de investimentos em Renda Fixa e Renda Var
 Em construção...
 
 Tecnologias:
-Java
-Spring Boot, Spring Data JPA, Maven, JUnit, Mockito.
+Java, Spring Boot, Spring Data JPA, Maven, JUnit, Mockito.
 ORM
 
 IDE:
-IntelliJ IDEA
+IntelliJ IDEA.
 
 Banco:
-H2
+H2.
