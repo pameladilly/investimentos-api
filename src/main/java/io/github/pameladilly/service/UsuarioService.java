@@ -5,9 +5,9 @@ import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
 
 public interface UsuarioService {
 
-    Usuario salvar(UsuarioRequestDTO usuarioRequestDTO);
+    Usuario salvar(Usuario usuario, String confirmacaoSenha);
 
-    Usuario atualizar(Long id, UsuarioRequestDTO usuarioRequestDTO);
+    Usuario atualizar(Long id, Usuario usuario, String confirmacaoSenha);
 
     Boolean alterarSenha(Long id, String senha, String senhaConfirmacao);
 
@@ -16,5 +16,7 @@ public interface UsuarioService {
     void excluir(Long id);
 
     Usuario getUsuarioById(Long id);
+
+
 
 }

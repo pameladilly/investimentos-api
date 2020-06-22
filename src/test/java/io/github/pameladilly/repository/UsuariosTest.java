@@ -3,6 +3,7 @@ package io.github.pameladilly.repository;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.domain.repository.Usuarios;
 import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,11 +39,10 @@ public class UsuariosTest {
 
         entityManager.persist(usuario);
 
+        Boolean usuarioSalvo = repository.findByLogin(usuario.getLogin()).isPresent();
 
-        Optional<Usuario> usuarioSalvo = repository.findByLogin(usuario.getLogin());
 
-
-        assertThat(usuarioSalvo.isPresent()).isTrue();
+        assertThat(usuarioSalvo).isTrue();
 
 
 
@@ -58,22 +58,38 @@ public class UsuariosTest {
                 .build();
     }
 
+
+
+
     @Test
-    @DisplayName("Deve atualizar um usuário a partir do ID")
-    public void atualizar(Integer idUsuario, UsuarioRequestDTO usuarioRequestDTO){
+    @DisplayName("Deve carregar um usuário a partir do login e validar a senha.")
+    public void carregarUsuarioLoginSenha(){
+        Usuario usuario = createUsuario();
+
+        String login  = "usuario@usuario";
+        usuario.setLogin(login);
+        entityManager.persist(usuario);
+        Usuario usuarioEncontrado = repository.findByLogin(login).get();
+
+
+        Assertions.assertThat(usuarioEncontrado).isNotNull();
 
 
     }
 
     @Test
-    @DisplayName("Deve alterar uma senha")
-    public void alterarSenha(String senha, String senhaConfirmacao){
+    @DisplayName("Deve deletar um usuário")
+    public void excluirUsuario(){
 
-    }
+        Usuario usuario = createUsuario();
 
-    @Test
-    @DisplayName("Deve carregar um usuário a partir do login e senha.")
-    public void carregar(String login, String senha){
+        entityManager.persist(usuario);
 
+        Usuario usuarioEncontrado = entityManager.find(Usuario.class, usuario.getIdUsuario());
+
+        repository.delete(usuarioEncontrado);
+
+        Usuario usuarioExcluido = entityManager.find(Usuario.class, usuarioEncontrado.getIdUsuario());
+        Assertions.assertThat(usuarioExcluido).isNull();
     }
 }

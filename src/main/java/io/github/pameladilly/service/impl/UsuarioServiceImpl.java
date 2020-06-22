@@ -22,35 +22,34 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario salvar(UsuarioRequestDTO usuarioRequestDTO)    {
-        if(!usuarioRequestDTO.getSenha().equals(usuarioRequestDTO.getSenhaConfirmacao())) {
+    public Usuario salvar(Usuario usuario, String confirmacaoSenha)    {
+        if(!usuario.getSenha().equals(confirmacaoSenha)) {
             throw new SenhasNaoConferemException();
         }
 
-        Usuario usuario = converter(usuarioRequestDTO);
         usuario.setDataCadastro(  LocalDateTime.now() );
         return repository.save(usuario);
 
     }
 
     @Override
-    public Usuario atualizar(Long id, UsuarioRequestDTO usuarioRequestDTO) {
-        if(!usuarioRequestDTO.getSenha().equals(usuarioRequestDTO.getSenhaConfirmacao())) {
+    public Usuario atualizar(Long id, Usuario usuario, String confirmacaoSenha) {
+        if(!usuario.getSenha().equals(confirmacaoSenha)) {
             throw new SenhasNaoConferemException();
         }
-        Usuario usuario = repository.findById(id).map(
+        Usuario usuarioUpdate = repository.findById(id).map(
                 user -> {
-                    user.setSenha(usuarioRequestDTO.getSenha());
-                    user.setNome(usuarioRequestDTO.getNome());
-                    user.setEmail(usuarioRequestDTO.getEmail());
-                    user.setLogin(usuarioRequestDTO.getLogin());
+                    user.setSenha(usuario.getSenha());
+                    user.setNome(usuario.getNome());
+                    user.setEmail(usuario.getEmail());
+                    user.setLogin(usuario.getLogin());
 
                     return user;
                 }).orElseThrow(
                     UsuarioNotFoundException::new
         );
 
-        return repository.save(usuario);
+        return repository.save(usuarioUpdate);
 
     }
 
@@ -84,7 +83,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void excluir(Long id) {
 
-         repository.deleteById(id);
+         Usuario usuario = repository.findById(id)
+                 .orElseThrow(UsuarioNotFoundException::new);
+
+         repository.delete(usuario);
 
     }
 

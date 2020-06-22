@@ -1,8 +1,10 @@
 package io.github.pameladilly.domain.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,6 +14,8 @@ import java.util.List;
 @Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Carteira {
 
     @Id
@@ -28,7 +32,7 @@ public class Carteira {
 
     private LocalDateTime ultimaAtualizacao ;
 
-    @OneToOne
+    @ManyToOne(targetEntity = Usuario.class)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 

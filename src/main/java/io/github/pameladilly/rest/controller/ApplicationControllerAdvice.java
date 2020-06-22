@@ -35,6 +35,7 @@ public class ApplicationControllerAdvice {
         return new ApiErrors(errors);
     }
 
+
     @ExceptionHandler(UsuarioNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiErrors handleUsuarioNotFounException(UsuarioNotFoundException ex) {

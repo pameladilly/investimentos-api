@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -34,5 +35,8 @@ public class Usuario {
 
     @Column( nullable = false)
     private LocalDateTime dataCadastro;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
+    private  List<Carteira> carteiras;
 
 }

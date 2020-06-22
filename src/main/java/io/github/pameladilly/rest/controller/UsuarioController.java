@@ -34,9 +34,12 @@ public class UsuarioController {
             @ApiResponse(code = 400, message = "Dados inválidos")
     })
     public UsuarioResponseDTO salvar(@RequestBody @Valid UsuarioRequestDTO usuarioRequestDTO) {
-        Usuario usuario;
 
-        usuario = usuarioService.salvar(usuarioRequestDTO);
+        Usuario usuario = modelMapper.map(usuarioRequestDTO, Usuario.class);
+        String confirmacaoSenha = usuarioRequestDTO.getSenhaConfirmacao();
+
+
+        usuario = usuarioService.salvar(usuario, confirmacaoSenha);
 
 
         return modelMapper.map(usuario, UsuarioResponseDTO.class);
@@ -71,9 +74,12 @@ public class UsuarioController {
     })
     public UsuarioResponseDTO atualizar(@PathVariable Long id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
 
-        Usuario usuario = usuarioService.atualizar(id, usuarioRequestDTO);
+        Usuario usuarioRequest =  modelMapper.map(usuarioRequestDTO, Usuario.class);
+        String confirmacaoSenha = usuarioRequestDTO.getSenhaConfirmacao();
 
-        return modelMapper.map(usuario, UsuarioResponseDTO.class);
+        Usuario usuarioUpdate = usuarioService.atualizar(id, usuarioRequest, confirmacaoSenha);
+
+        return modelMapper.map(usuarioUpdate, UsuarioResponseDTO.class);
     }
 
     @DeleteMapping("{id}")
