@@ -28,8 +28,11 @@ public class CarteiraServiceImpl implements CarteiraService {
     @Override
     public Carteira salvar(Carteira carteira) {
 
+
         if(!usuariosRepository.existsById(carteira.getUsuario().getIdUsuario())){
             throw new UsuarioNotFoundException();
+        }else {
+            carteira.setUsuario( usuariosRepository.findById(carteira.getUsuario().getIdUsuario()).get());
         }
 
 

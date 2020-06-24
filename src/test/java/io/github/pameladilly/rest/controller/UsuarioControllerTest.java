@@ -47,13 +47,7 @@ public class UsuarioControllerTest {
     public void salvarUsuario() throws Exception {
         UsuarioRequestDTO usuarioRequestDTO = getNewUsuarioRequestDTO();
 
-        Usuario savedUsuario = Usuario.builder()
-                                    .idUsuario(1L)
-                                    .nome("Fulano de Assis")
-                                    .email("usuario@usuaio.com")
-                                    .senha("123")
-                                    .dataCadastro(LocalDateTime.now())
-                                    .login("usuario").build();
+        Usuario savedUsuario = newUsuario();
 
         BDDMockito.given(service.salvar(Mockito.any(Usuario.class), Mockito.anyString())).willReturn(savedUsuario);
 
@@ -73,6 +67,16 @@ public class UsuarioControllerTest {
                 .andExpect( MockMvcResultMatchers.jsonPath("email").value(usuarioRequestDTO.getEmail()))
                 .andExpect( MockMvcResultMatchers.jsonPath("login").value(usuarioRequestDTO.getLogin()));
 
+    }
+
+    private Usuario newUsuario() {
+        return Usuario.builder()
+                                    .idUsuario(1L)
+                                    .nome("Fulano de Assis")
+                                    .email("usuario@usuaio.com")
+                                    .senha("123")
+                                    .dataCadastro(LocalDateTime.now())
+                                    .login("usuario").build();
     }
 
     @Test
@@ -203,7 +207,7 @@ public class UsuarioControllerTest {
 
     }
 
-    private Usuario getNewUsuario() {
+    public static  Usuario getNewUsuario() {
         return Usuario.builder().idUsuario(1L).email("usuario@test.com").nome("Usuário Test").login("usuario").senha("123").build();
     }
 

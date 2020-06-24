@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/carteira")
 public class CarteiraController {
@@ -23,14 +25,14 @@ public class CarteiraController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CarteiraResponseDTO salvar(@RequestBody CarteiraRequestDTO carteiraRequestDTO){
+    public CarteiraResponseDTO salvar(@RequestBody @Valid  CarteiraRequestDTO carteiraRequestDTO){
 
         Carteira carteira = modelMapper.map(carteiraRequestDTO, Carteira.class);
         carteira.setIdCarteira(null);
         carteira = service.salvar(carteira);
 
         UsuarioResponseDTO usuarioRespDTO = modelMapper.map( carteira.getUsuario(), UsuarioResponseDTO.class );
-        CarteiraResponseDTO carteiraRespDTO = modelMapper.map( service.salvar(carteira), CarteiraResponseDTO.class );
+        CarteiraResponseDTO carteiraRespDTO = modelMapper.map( carteira, CarteiraResponseDTO.class );
         carteiraRespDTO.setUsuarioResponseDTO(usuarioRespDTO);
 
         return carteiraRespDTO;

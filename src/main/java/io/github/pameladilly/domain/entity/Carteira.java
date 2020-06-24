@@ -32,7 +32,7 @@ public class Carteira {
 
     private LocalDateTime ultimaAtualizacao ;
 
-    @ManyToOne(targetEntity = Usuario.class)
+    @ManyToOne(targetEntity = Usuario.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 

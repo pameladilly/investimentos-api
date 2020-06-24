@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface Carteiras extends JpaRepository<Carteira, Long> {
 
-
+    //boolean existsUsuario(Long id);
 
 }
