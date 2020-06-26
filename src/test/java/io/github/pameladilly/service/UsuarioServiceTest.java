@@ -1,10 +1,9 @@
 package io.github.pameladilly.service;
 
 import io.github.pameladilly.domain.entity.Usuario;
-import io.github.pameladilly.domain.repository.Usuarios;
+import io.github.pameladilly.domain.repository.UsuarioRepository;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.service.impl.UsuarioServiceImpl;
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +22,7 @@ import java.util.Optional;
 public class UsuarioServiceTest {
 
     @MockBean
-    Usuarios repository;
+    UsuarioRepository repository;
 
     UsuarioService service;
 

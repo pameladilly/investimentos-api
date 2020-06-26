@@ -6,4 +6,5 @@ public enum TipoAtivo {
     RENDAFIXA;
 
 
+
 }

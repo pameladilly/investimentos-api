@@ -16,6 +16,14 @@ import java.time.LocalDateTime;
 public class RendaFixa extends Ativo {
 
 
+    public RendaFixa(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario, BigDecimal rentabilidadeDiaria, LocalDate vencimento, BigDecimal preco, BigDecimal rentabilidadeMensal) {
+        super(idAtivo, descricao, dataCadastro, tipoAtivo, usuario);
+        this.rentabilidadeDiaria = rentabilidadeDiaria;
+        this.vencimento = vencimento;
+        this.preco = preco;
+        this.rentabilidadeMensal = rentabilidadeMensal;
+    }
+
     @Column(precision = 6, scale = 3)
     private BigDecimal rentabilidadeDiaria;
 
@@ -26,13 +34,16 @@ public class RendaFixa extends Ativo {
     @Column(precision = 8, scale = 3, nullable = false)
     private BigDecimal preco;
 
+    @Column(precision = 6, scale = 3)
+    private BigDecimal rentabilidadeMensal;
 
-    public RendaFixa(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario, BigDecimal rentabilidadeDiaria, LocalDate vencimento, BigDecimal preco) {
+/*
+    public RendaFixa(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario, BigDecimal rentabilidadeDiaria, LocalDate vencimento, BigDecimal preco, BigDecimal rentabilidadeMensal) {
         super(idAtivo, descricao, dataCadastro, tipoAtivo, usuario);
         this.rentabilidadeDiaria = rentabilidadeDiaria;
         this.vencimento = vencimento;
         this.preco = preco;
+        this.rentabilidadeMensal = rentabilidadeMensal;
 
-
-    }
+    }*/
 }

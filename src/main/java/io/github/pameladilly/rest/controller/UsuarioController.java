@@ -9,7 +9,9 @@ import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sun.usagetracker.UsageTrackerClient;
 
 import javax.validation.Valid;
 
@@ -36,6 +38,7 @@ public class UsuarioController {
     public UsuarioResponseDTO salvar(@RequestBody @Valid UsuarioRequestDTO usuarioRequestDTO) {
 
         Usuario usuario = modelMapper.map(usuarioRequestDTO, Usuario.class);
+
         String confirmacaoSenha = usuarioRequestDTO.getSenhaConfirmacao();
 
 

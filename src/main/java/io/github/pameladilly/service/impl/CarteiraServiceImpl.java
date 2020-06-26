@@ -1,15 +1,11 @@
 package io.github.pameladilly.service.impl;
 
 import io.github.pameladilly.domain.entity.Carteira;
-import io.github.pameladilly.domain.repository.Carteiras;
-import io.github.pameladilly.domain.repository.Usuarios;
+import io.github.pameladilly.domain.repository.CarteiraRepository;
+import io.github.pameladilly.domain.repository.UsuarioRepository;
 import io.github.pameladilly.exception.carteira.CarteiraNotFound;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.service.CarteiraService;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,10 +13,10 @@ import java.time.LocalDateTime;
 @Service
 public class CarteiraServiceImpl implements CarteiraService {
 
-    Carteiras repository;
-    Usuarios usuariosRepository;
+    CarteiraRepository repository;
+    UsuarioRepository usuariosRepository;
 
-    public CarteiraServiceImpl(Carteiras repository, Usuarios usuariosRepository) {
+    public CarteiraServiceImpl(CarteiraRepository repository, UsuarioRepository usuariosRepository) {
         this.repository = repository;
         this.usuariosRepository = usuariosRepository;
     }

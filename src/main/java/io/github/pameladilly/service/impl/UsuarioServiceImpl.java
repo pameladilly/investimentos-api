@@ -1,7 +1,7 @@
 package io.github.pameladilly.service.impl;
 
 import io.github.pameladilly.domain.entity.Usuario;
-import io.github.pameladilly.domain.repository.Usuarios;
+import io.github.pameladilly.domain.repository.UsuarioRepository;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.exception.usuario.SenhaInvalidaException;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 public class UsuarioServiceImpl implements UsuarioService {
 
   //  @Autowired
-    final Usuarios repository;
+    final UsuarioRepository repository;
 
-    public UsuarioServiceImpl(Usuarios repository) {
+    public UsuarioServiceImpl(UsuarioRepository repository) {
         this.repository = repository;
     }
 
@@ -28,6 +28,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         usuario.setDataCadastro(  LocalDateTime.now() );
+
         return repository.save(usuario);
 
     }
@@ -46,7 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
                     return user;
                 }).orElseThrow(
-                    UsuarioNotFoundException::new
+                   UsuarioNotFoundException::new
         );
 
         return repository.save(usuarioUpdate);

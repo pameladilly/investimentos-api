@@ -3,8 +3,8 @@ package io.github.pameladilly.service;
 
 import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.domain.entity.Usuario;
-import io.github.pameladilly.domain.repository.Carteiras;
-import io.github.pameladilly.domain.repository.Usuarios;
+import io.github.pameladilly.domain.repository.CarteiraRepository;
+import io.github.pameladilly.domain.repository.UsuarioRepository;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.service.impl.CarteiraServiceImpl;
 import org.assertj.core.api.Assertions;
@@ -12,15 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -32,10 +29,10 @@ public class CarteiraServiceTest {
 
 
     @MockBean
-    Carteiras repository;
+    CarteiraRepository repository;
 
     @MockBean
-    Usuarios usuariosRepository;
+    UsuarioRepository usuariosRepository;
 
     @BeforeEach
     public void setUp(){

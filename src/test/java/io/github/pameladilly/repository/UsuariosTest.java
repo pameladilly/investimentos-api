@@ -1,8 +1,7 @@
 package io.github.pameladilly.repository;
 
 import io.github.pameladilly.domain.entity.Usuario;
-import io.github.pameladilly.domain.repository.Usuarios;
-import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
+import io.github.pameladilly.domain.repository.UsuarioRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +23,7 @@ public class UsuariosTest {
 
 
     @Autowired
-    Usuarios repository;
+    UsuarioRepository repository;
 
     @Autowired
     TestEntityManager entityManager;

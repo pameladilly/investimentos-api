@@ -28,6 +28,7 @@ public class Carteira {
     private LocalDateTime dataCadastro;
 
     @Column(precision = 6, scale = 2)
+
     private BigDecimal rentabilidade;
 
     private LocalDateTime ultimaAtualizacao ;
