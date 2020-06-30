@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -52,6 +53,7 @@ public class CarteiraServiceTest {
                 .usuario(usuario).descricao("Renda Fixa Test").build();
 
         Mockito.when( usuariosRepository.existsById(Mockito.anyLong())).thenReturn(true);
+        Mockito.when( usuariosRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(usuario));
         Mockito.when( repository.save(carteiraSalvar)).thenReturn(carteiraSalva);
 
         Carteira carteira = service.salvar(carteiraSalvar);
