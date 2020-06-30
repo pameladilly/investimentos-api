@@ -54,6 +54,7 @@ public class UsuariosTest {
                 .nome("Pamela")
                 .dataCadastro( LocalDateTime.now() )
                 .build();
+
     }
 
 

@@ -69,7 +69,7 @@ public class UsuarioControllerTest {
 
     }
 
-    private Usuario newUsuario() {
+    static public Usuario newUsuario() {
         return Usuario.builder()
                                     .idUsuario(1L)
                                     .nome("Fulano de Assis")

@@ -71,7 +71,7 @@ public class UsuarioServiceTest {
 
     }
 
-    private Usuario createNewUsuario() {
+    static public Usuario createNewUsuario() {
         return Usuario.builder()
                 .idUsuario(1L)
                 .dataCadastro(LocalDateTime.now())

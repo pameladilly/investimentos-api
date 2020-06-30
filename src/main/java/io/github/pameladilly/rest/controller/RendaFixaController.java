@@ -37,11 +37,11 @@ public class RendaFixaController {
 
     private RendaFixa rendaFixaRequestDTOToRendaFixa(RendaFixaRequestDTO rendaFixaRequestDTO){
 
-        Usuario idUsuario = usuarioService.getUsuarioById(rendaFixaRequestDTO.getUsuario());
+        Usuario usuario = usuarioService.getUsuarioById(rendaFixaRequestDTO.getUsuario());
 
 
         return new RendaFixa(null, rendaFixaRequestDTO.getDescricao(), null, TipoAtivo.RENDAFIXA,
-            idUsuario, rendaFixaRequestDTO.getRentabilidadeDiaria(),
+                usuario, rendaFixaRequestDTO.getRentabilidadeDiaria(),
                 rendaFixaRequestDTO.getVencimento(),
                 rendaFixaRequestDTO.getPreco(),
                 rendaFixaRequestDTO.getRentabilidadeMensal());

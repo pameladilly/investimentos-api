@@ -21,8 +21,8 @@ public class RendaFixaRequestDTO {
     @NotEmpty(message = "Informe a descrição")
     private String descricao;
 
-    @NotEmpty(message = "Informe o tipo do Ativo")
-    private String tipoAtivo;
+  //  @NotEmpty(message = "Informe o tipo do Ativo")
+   // private String tipoAtivo;
 
     @NotNull(message = "Informe a rentabilidade diária")
     private BigDecimal rentabilidadeDiaria;
