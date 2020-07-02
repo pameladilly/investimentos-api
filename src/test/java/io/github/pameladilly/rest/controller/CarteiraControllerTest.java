@@ -66,7 +66,7 @@ public class CarteiraControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("usuarioResponseDTO").isNotEmpty());
+                .andExpect(jsonPath("usuario").value(1L));
     }
 
     @Test

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-  //  @Autowired
+
     final UsuarioRepository repository;
 
     public UsuarioServiceImpl(UsuarioRepository repository) {
@@ -26,8 +26,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         if(!usuario.getSenha().equals(confirmacaoSenha)) {
             throw new SenhasNaoConferemException();
         }
-
-        usuario.setDataCadastro(  LocalDateTime.now() );
 
         return repository.save(usuario);
 

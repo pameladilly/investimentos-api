@@ -19,5 +19,5 @@ public class CarteiraResponseDTO {
     private String descricao;
     private LocalDateTime dataCadastro;
     private LocalDateTime ultimaAtualizacao;
-    private UsuarioResponseDTO usuarioResponseDTO;
+    private Long usuario;
 }

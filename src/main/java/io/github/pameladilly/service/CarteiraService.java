@@ -1,6 +1,8 @@
 package io.github.pameladilly.service;
 
 import io.github.pameladilly.domain.entity.Carteira;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
@@ -13,7 +15,7 @@ public interface CarteiraService {
 
     Boolean excluir(Carteira carteira);
 
-
+    Page<Carteira> pesquisar(Carteira filter, Pageable pageRequest);
 
 
 }

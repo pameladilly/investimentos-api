@@ -22,6 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -93,6 +94,9 @@ public class RendaFixaServiceTest {
         Usuario usuario = UsuarioServiceTest.createNewUsuario();
         RendaFixa rendaFixaMock = newRendaFixa(usuario, LocalDate.of(2025, 1, 1));
         rendaFixaMock.setIdAtivo(1L);
+
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.of(rendaFixaMock));
 
         org.junit.jupiter.api.Assertions.assertDoesNotThrow( () -> service.excluir(rendaFixaMock));
 

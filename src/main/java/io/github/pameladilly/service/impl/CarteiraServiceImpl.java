@@ -6,6 +6,10 @@ import io.github.pameladilly.domain.repository.UsuarioRepository;
 import io.github.pameladilly.exception.carteira.CarteiraNotFound;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.service.CarteiraService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,8 +37,6 @@ public class CarteiraServiceImpl implements CarteiraService {
 
 
 
-        carteira.setDataCadastro(LocalDateTime.now());
-        carteira.setUltimaAtualizacao(LocalDateTime.now());
 
         return repository.save(carteira);
     }
@@ -45,7 +47,7 @@ public class CarteiraServiceImpl implements CarteiraService {
         Carteira carteiraEncontrada = repository.findById(id).orElseThrow(
                 () -> new CarteiraNotFound()
         );
-        carteiraEncontrada.setUltimaAtualizacao(LocalDateTime.now());
+
         return repository.save(carteiraEncontrada);
     }
 
@@ -59,5 +61,17 @@ public class CarteiraServiceImpl implements CarteiraService {
         repository.delete(carteiraEncontrada);
 
         return (!repository.findById(carteiraEncontrada.getIdCarteira()).isPresent());
+    }
+
+    @Override
+    public Page<Carteira> pesquisar(Carteira filter, Pageable pageRequest) {
+
+        Example<Carteira> example = Example.of(filter,
+                ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withIgnoreNullValues()
+                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING));
+
+        return repository.findAll(example, pageRequest);
     }
 }

@@ -3,6 +3,7 @@ package io.github.pameladilly.domain.entity;
 import io.github.pameladilly.domain.enums.TipoAtivo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Persistent;
 
@@ -23,7 +24,7 @@ public abstract class Ativo {
     @Column(length = 120, nullable = false)
     private String descricao;
 
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime dataCadastro;
 
     @Enumerated(EnumType.STRING)

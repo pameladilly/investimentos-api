@@ -85,6 +85,8 @@ public class UsuarioController {
         return modelMapper.map(usuarioUpdate, UsuarioResponseDTO.class);
     }
 
+
+
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Excluir conta do usuário")

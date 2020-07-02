@@ -89,6 +89,7 @@ public class UsuariosTest {
         repository.delete(usuarioEncontrado);
 
         Usuario usuarioExcluido = entityManager.find(Usuario.class, usuarioEncontrado.getIdUsuario());
+
         Assertions.assertThat(usuarioExcluido).isNull();
     }
 }

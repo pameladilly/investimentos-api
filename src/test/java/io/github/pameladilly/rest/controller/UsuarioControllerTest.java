@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest
+@WebMvcTest(controllers = UsuarioController.class)
 @AutoConfigureMockMvc
 public class UsuarioControllerTest {
 
@@ -98,8 +98,8 @@ public class UsuarioControllerTest {
         mockMvc.perform( request )
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath( "errors[0]").value(Matchers.containsString("Informe um e-mail")))
-                .andExpect(MockMvcResultMatchers.jsonPath( "errors[1]").value(Matchers.containsString("Informe o nome")));
+                .andExpect(MockMvcResultMatchers.jsonPath( "errors[0]").value(Matchers.containsString("Informe o nome")))
+                .andExpect(MockMvcResultMatchers.jsonPath( "errors[1]").value(Matchers.containsString("Informe um e-mail")));
 
     }
     @Test

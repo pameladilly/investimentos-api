@@ -26,7 +26,6 @@ public class RendaFixaImpl implements RendaFixaService {
             throw new RegraNegocioException("Usuário não informado.");
         }
 
-        rendaFixa.setDataCadastro( LocalDateTime.now());
 
         return repository.save(rendaFixa);
 

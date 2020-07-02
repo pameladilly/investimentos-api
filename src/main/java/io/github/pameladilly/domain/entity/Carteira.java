@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -25,12 +29,14 @@ public class Carteira {
     @Column(length = 120)
     private String descricao;
 
+    @CreationTimestamp
     private LocalDateTime dataCadastro;
 
     @Column(precision = 6, scale = 2)
 
     private BigDecimal rentabilidade;
 
+    @UpdateTimestamp
     private LocalDateTime ultimaAtualizacao ;
 
     @ManyToOne(targetEntity = Usuario.class, fetch = FetchType.EAGER)
