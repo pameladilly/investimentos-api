@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -17,6 +18,7 @@ public class RendaFixaResponseDTO {
     private Long id;
     private String descricao;
     private LocalDateTime dataCadastro;
+    private LocalDate vencimento;
     private String tipoAtivo;
     private BigDecimal preco;
     private BigDecimal rentabilidadeMensal;

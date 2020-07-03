@@ -15,6 +15,15 @@ import java.time.LocalDateTime;
 @Setter
 public class RendaFixa extends Ativo {
 
+  /*  public RendaFixa(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario){
+        super(idAtivo, descricao, dataCadastro, tipoAtivo, usuario);
+
+    }*/
+
+    public RendaFixa(){
+        super();
+
+    }
 
     public RendaFixa(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario, BigDecimal rentabilidadeDiaria, LocalDate vencimento, BigDecimal preco, BigDecimal rentabilidadeMensal) {
         super(idAtivo, descricao, dataCadastro, tipoAtivo, usuario);

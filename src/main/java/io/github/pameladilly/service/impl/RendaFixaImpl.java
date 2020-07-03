@@ -34,7 +34,17 @@ public class RendaFixaImpl implements RendaFixaService {
     @Override
     public RendaFixa atualizar(RendaFixa rendaFixa) {
 
-        return repository.save(rendaFixa);
+         return repository.findById(rendaFixa.getIdAtivo()).map(
+            entity -> {
+                entity.setPreco(rendaFixa.getPreco());
+                entity.setDescricao(rendaFixa.getDescricao());
+                entity.setVencimento(rendaFixa.getVencimento());
+                entity.setRentabilidadeDiaria(rendaFixa.getRentabilidadeDiaria());
+                entity.setRentabilidadeMensal(rendaFixa.getRentabilidadeMensal());
+                return repository.save(entity);
+            }
+        ).orElseThrow(RendaFixaNotFound::new);
+
     }
 
     @Override

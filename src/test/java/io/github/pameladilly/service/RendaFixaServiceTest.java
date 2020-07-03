@@ -75,7 +75,11 @@ public class RendaFixaServiceTest {
         Usuario usuario = UsuarioServiceTest.createNewUsuario();
         RendaFixa rendaFixaMock = newRendaFixa(usuario, LocalDate.of(2025, 1, 1));
         rendaFixaMock.setDescricao("Tesouro Direto");
+        rendaFixaMock.setIdAtivo(1L);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.of(rendaFixaMock));
         Mockito.when( repository.save(Mockito.any(RendaFixa.class))).thenReturn( rendaFixaMock);
+
 
         RendaFixa rendaFixaAtualizada = service.atualizar(rendaFixaMock);
 
@@ -127,5 +131,20 @@ public class RendaFixaServiceTest {
 
         Mockito.verify( repository, Mockito.never()).save(rendaFixaMock);
 
+    }
+
+    @Test
+    @DisplayName("Deve gerar exceção ao tentar atualizar renda fixa inexistente")
+    public void atualizarRendaFixaInexistenteTest(){
+
+        Usuario usuario = UsuarioServiceTest.createNewUsuario();
+        RendaFixa rendaFixaMock = newRendaFixa(usuario, LocalDate.of(2025, 1, 1));
+        rendaFixaMock.setIdAtivo(1L);
+
+        Throwable  exception = org.junit.jupiter.api.Assertions.assertThrows(RendaFixaNotFound.class, () -> service.atualizar(rendaFixaMock));
+
+        Assertions.assertThat(exception).isInstanceOf(RendaFixaNotFound.class).hasMessage(RendaFixaNotFound.MSG);
+
+        Mockito.verify( repository, Mockito.never()).delete(rendaFixaMock);
     }
 }

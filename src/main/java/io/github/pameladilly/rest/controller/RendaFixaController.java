@@ -55,11 +55,36 @@ public class RendaFixaController {
                 .preco(rendaFixa.getPreco())
                 .rentabilidadeDiaria(rendaFixa.getRentabilidadeDiaria())
                 .rentabilidadeMensal(rendaFixa.getRentabilidadeMensal())
+                .vencimento(rendaFixa.getVencimento())
                 .descricao(rendaFixa.getDescricao())
                 .tipoAtivo(TipoAtivo.RENDAFIXA.toString())
                 .id(rendaFixa.getIdAtivo())
                 .usuario(rendaFixa.getUsuario().getIdUsuario())
                 .build();
+
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void excluir(@RequestBody @Valid  RendaFixaRequestDTO rendaFixaRequestDTO){
+
+        RendaFixa rendaFixa = rendaFixaRequestDTOToRendaFixa(rendaFixaRequestDTO);
+
+        service.excluir(rendaFixa);
+
+
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public RendaFixaResponseDTO atualizar(@PathVariable Long id, @RequestBody @Valid RendaFixaRequestDTO rendaFixaRequestDTO){
+        RendaFixa rendaFixa = rendaFixaRequestDTOToRendaFixa(rendaFixaRequestDTO);
+
+        rendaFixa.setIdAtivo(id);
+
+        rendaFixa = service.atualizar(rendaFixa);
+
+        return rendaFixaToRendaFixaResponseDTO(rendaFixa);
 
     }
 }

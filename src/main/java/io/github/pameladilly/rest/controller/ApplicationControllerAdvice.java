@@ -1,9 +1,11 @@
 package io.github.pameladilly.rest.controller;
 
+import io.github.pameladilly.exception.rendafixa.RendaFixaNotFound;
 import io.github.pameladilly.exception.usuario.SenhaInvalidaException;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.rest.ApiErrors;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,7 +31,7 @@ public class ApplicationControllerAdvice {
         List<String> errors = ex.getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map( e -> e.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
 
         return new ApiErrors(errors);
@@ -38,13 +40,19 @@ public class ApplicationControllerAdvice {
 
     @ExceptionHandler(UsuarioNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiErrors handleUsuarioNotFounException(UsuarioNotFoundException ex) {
+    public ApiErrors handleUsuarioNotFoundException(UsuarioNotFoundException ex) {
         return new ApiErrors(ex.getMessage());
     }
 
     @ExceptionHandler({SenhaInvalidaException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiErrors handleSenhaInvalidaException(SenhaInvalidaException ex) {
+        return new ApiErrors(ex.getMessage());
+    }
+
+    @ExceptionHandler(RendaFixaNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleRendaFixaNotFound(RendaFixaNotFound ex) {
         return new ApiErrors(ex.getMessage());
     }
 }
