@@ -9,10 +9,15 @@ import io.github.pameladilly.service.RendaFixaService;
 import io.github.pameladilly.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/rendafixa")
@@ -64,13 +69,14 @@ public class RendaFixaController {
 
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void excluir(@RequestBody @Valid  RendaFixaRequestDTO rendaFixaRequestDTO){
+    public void excluir(@PathVariable Long id){
 
-        RendaFixa rendaFixa = rendaFixaRequestDTOToRendaFixa(rendaFixaRequestDTO);
+        RendaFixa rendaFixa = service.findById(id);
 
         service.excluir(rendaFixa);
+
 
 
     }
@@ -86,5 +92,20 @@ public class RendaFixaController {
 
         return rendaFixaToRendaFixaResponseDTO(rendaFixa);
 
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Page<RendaFixaResponseDTO> pesquisar(RendaFixaRequestDTO rendaFixaRequestDTO, Pageable pageRequest){
+
+        RendaFixa filter = rendaFixaRequestDTOToRendaFixa(rendaFixaRequestDTO);
+
+        Page<RendaFixa> result = service.pesquisar(filter, pageRequest);
+        List<RendaFixaResponseDTO> list = result.getContent().stream().map(
+                entity -> {
+                    return modelMapper.map(entity, RendaFixaResponseDTO.class);
+                }).collect(Collectors.toList());
+
+        return new PageImpl<RendaFixaResponseDTO>( list, pageRequest, result.getTotalElements());
     }
 }

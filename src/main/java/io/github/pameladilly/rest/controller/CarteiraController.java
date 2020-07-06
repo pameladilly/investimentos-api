@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/carteira")
+@RequestMapping(value = "api/carteira")
 public class CarteiraController {
 
     private final CarteiraService service;
@@ -36,7 +38,6 @@ public class CarteiraController {
         carteira.setIdCarteira(null);
         carteira = service.salvar(carteira);
 
-
         CarteiraResponseDTO carteiraRespDTO = modelMapper.map( carteira, CarteiraResponseDTO.class );
 
         return carteiraRespDTO;
@@ -45,7 +46,7 @@ public class CarteiraController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<CarteiraResponseDTO> find(  CarteiraRequestDTO carteiraRequestDTO, Pageable pageRequest){
+    public Page<CarteiraResponseDTO> find( CarteiraRequestDTO carteiraRequestDTO, Pageable pageRequest){
 
         Carteira filter = modelMapper.map(carteiraRequestDTO, Carteira.class);
 

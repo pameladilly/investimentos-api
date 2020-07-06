@@ -20,4 +20,6 @@ public class CarteiraResponseDTO {
     private LocalDateTime dataCadastro;
     private LocalDateTime ultimaAtualizacao;
     private Long usuario;
+
+    private UsuarioResponseDTO usuarioResponseDTO;
 }
