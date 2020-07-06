@@ -73,6 +73,7 @@ public class RendaFixaImpl implements RendaFixaService {
 
         return repository.findAll(example, pageRequest);
 
+
     }
 
     @Override
