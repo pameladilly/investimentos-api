@@ -25,8 +25,10 @@ public class RendaFixa extends Ativo {
 
     }
 
-    public RendaFixa(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario, BigDecimal rentabilidadeDiaria, LocalDate vencimento, BigDecimal preco, BigDecimal rentabilidadeMensal) {
-        super(idAtivo, descricao, dataCadastro, tipoAtivo, usuario);
+    public RendaFixa(Long idAtivo, String descricao, LocalDateTime dataCadastro, LocalDateTime dataAtualizacao,
+                     TipoAtivo tipoAtivo, Usuario usuario, BigDecimal rentabilidadeDiaria, LocalDate vencimento,
+                     BigDecimal preco, BigDecimal rentabilidadeMensal) {
+        super(idAtivo, descricao, dataCadastro, dataAtualizacao, tipoAtivo, usuario);
         this.rentabilidadeDiaria = rentabilidadeDiaria;
         this.vencimento = vencimento;
         this.preco = preco;

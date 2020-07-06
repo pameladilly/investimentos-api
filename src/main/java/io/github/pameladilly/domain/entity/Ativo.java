@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Persistent;
 
@@ -30,12 +31,15 @@ public abstract class Ativo {
     @Column(updatable = false)
     private LocalDateTime dataCadastro;
 
+    @UpdateTimestamp
+    @Column(updatable = true)
+    private LocalDateTime dataAtualizacao;
+
     @Enumerated(EnumType.STRING)
     private TipoAtivo tipoAtivo;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Usuario.class)
     private Usuario usuario;
-
 
 
 }

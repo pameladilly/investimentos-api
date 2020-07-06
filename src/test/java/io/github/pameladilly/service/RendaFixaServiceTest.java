@@ -65,7 +65,7 @@ public class RendaFixaServiceTest {
 
     private RendaFixa newRendaFixa(Usuario usuario, LocalDate vencimento) {
         return new RendaFixa(null,
-                "Minha renda fixa", null,
+                "Minha renda fixa", null, null,
                 TipoAtivo.RENDAFIXA, usuario, BigDecimal.valueOf(0.01), vencimento, BigDecimal.valueOf(5000.00), BigDecimal.valueOf(1));
     }
 

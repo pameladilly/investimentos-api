@@ -25,8 +25,14 @@ public class RendaVariavel extends Ativo {
     private BigDecimal cotacao;
 
 
-    public RendaVariavel(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario, String ticker, BigDecimal cotacao) {
+    /*public RendaVariavel(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario, String ticker, BigDecimal cotacao) {
         super(idAtivo, descricao, dataCadastro, tipoAtivo, usuario);
+        this.ticker = ticker;
+        this.cotacao = cotacao;
+    }*/
+
+    public RendaVariavel(Long idAtivo, String descricao, LocalDateTime dataCadastro, LocalDateTime dataAtualizacao, TipoAtivo tipoAtivo, Usuario usuario, String ticker, BigDecimal cotacao) {
+        super(idAtivo, descricao, dataCadastro, dataAtualizacao, tipoAtivo, usuario);
         this.ticker = ticker;
         this.cotacao = cotacao;
     }

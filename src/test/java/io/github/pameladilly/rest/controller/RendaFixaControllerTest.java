@@ -79,7 +79,7 @@ public class RendaFixaControllerTest {
         jsonObject.put("usuario", rendaFixaRequestDTO.getUsuario());
 
 
-        RendaFixa rendaFixaMock = new RendaFixa(1L, "Tesouro Direto", LocalDateTime.now(),
+        RendaFixa rendaFixaMock = new RendaFixa(1L, "Tesouro Direto", LocalDateTime.now(), null,
                 TipoAtivo.RENDAFIXA, usuarioMock, rentabilidadeDiaria,  vencimento, preco, rentabilidadeMensal );
 
         BDDMockito.given( rendaFixaService.salvar(Mockito.any())).willReturn(rendaFixaMock);
@@ -192,7 +192,7 @@ public class RendaFixaControllerTest {
         jsonObject.put("usuario", rendaFixaRequestDTO.getUsuario());
 
 
-        RendaFixa rendaFixaMock = new RendaFixa(1L, "Tesouro Direto 2025", LocalDateTime.now(),
+        RendaFixa rendaFixaMock = new RendaFixa(1L, "Tesouro Direto 2025", LocalDateTime.now(), null,
                 TipoAtivo.RENDAFIXA, usuarioMock, rentabilidadeDiaria,  vencimento, preco, rentabilidadeMensal );
 
 
