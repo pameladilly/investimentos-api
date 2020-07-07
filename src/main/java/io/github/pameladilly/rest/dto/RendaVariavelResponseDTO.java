@@ -22,5 +22,6 @@ public class RendaVariavelResponseDTO {
     private LocalDateTime dataAtualizacao;
     private String ticker;
     private BigDecimal cotacao;
+    private Long usuario;
 
 }

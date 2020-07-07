@@ -1,6 +1,8 @@
 package io.github.pameladilly.rest.controller;
 
+import io.github.pameladilly.domain.entity.RendaVariavel;
 import io.github.pameladilly.exception.rendafixa.RendaFixaNotFound;
+import io.github.pameladilly.exception.rendavariavel.RendaVariavelNotFound;
 import io.github.pameladilly.exception.usuario.SenhaInvalidaException;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
@@ -55,4 +57,11 @@ public class ApplicationControllerAdvice {
     public ApiErrors handleRendaFixaNotFound(RendaFixaNotFound ex) {
         return new ApiErrors(ex.getMessage());
     }
+
+    @ExceptionHandler(RendaVariavelNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleRendaVariavelNotFound(RendaVariavelNotFound ex) {
+        return new ApiErrors(ex.getMessage());
+    }
+
 }

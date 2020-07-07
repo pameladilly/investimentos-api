@@ -101,6 +101,7 @@ public class RendaFixaController {
         RendaFixa filter = rendaFixaRequestDTOToRendaFixa(rendaFixaRequestDTO);
 
         Page<RendaFixa> result = service.pesquisar(filter, pageRequest);
+
         List<RendaFixaResponseDTO> list = result.getContent().stream().map(
                 entity -> {
                     return modelMapper.map(entity, RendaFixaResponseDTO.class);

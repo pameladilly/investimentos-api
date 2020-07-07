@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class RendaVariavelImpl implements RendaVariavelService {
 
@@ -44,11 +46,26 @@ public class RendaVariavelImpl implements RendaVariavelService {
     }
 
     @Override
+    public RendaVariavel atualizarCotacao(Long id, BigDecimal cotacao) {
+
+        return  repository.findById(id).map( entity -> {
+            entity.setCotacao(cotacao);
+            return repository.save(entity);
+        }).orElseThrow(RendaVariavelNotFound::new);
+    }
+
+    @Override
     public void excluir(RendaVariavel rendaVariavel) {
 
-        RendaVariavel entity = repository.findById(rendaVariavel.getIdAtivo()).orElseThrow(RendaVariavelNotFound::new);
+        repository.delete(rendaVariavel);
+    }
 
-        repository.delete(entity);
+    @Override
+    public void excluir(Long id){
+
+        excluir( repository.findById(id).orElseThrow(RendaVariavelNotFound::new));
+
+
     }
 
     @Override
