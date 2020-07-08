@@ -42,25 +42,33 @@ public class CarteiraServiceImpl implements CarteiraService {
     }
 
     @Override
-    public Carteira editar(Long id, Carteira carteira) {
+    public Carteira atualizar(Long id, Carteira carteira) {
 
-        Carteira carteiraEncontrada = repository.findById(id).orElseThrow(
-                () -> new CarteiraNotFound()
-        );
+         return repository.findById(id).map( entity -> {
 
-        return repository.save(carteiraEncontrada);
+                    entity.setDescricao(carteira.getDescricao());
+                    return repository.save(entity);
+                }
+                ). orElseThrow(CarteiraNotFound::new);
+
     }
 
     @Override
     public Boolean excluir(Carteira carteira) {
 
-        Carteira carteiraEncontrada = repository.findById(carteira.getIdCarteira()).orElseThrow(
-                () -> new CarteiraNotFound()
-        );
+        Carteira carteiraEncontrada = repository.findById(carteira.getIdCarteira()).orElseThrow(CarteiraNotFound::new);
 
         repository.delete(carteiraEncontrada);
 
         return (!repository.findById(carteiraEncontrada.getIdCarteira()).isPresent());
+    }
+
+    @Override
+    public void excluir(Long id) {
+
+        Carteira carteira = repository.findById(id).orElseThrow(CarteiraNotFound::new);
+
+        excluir(carteira);
     }
 
     @Override

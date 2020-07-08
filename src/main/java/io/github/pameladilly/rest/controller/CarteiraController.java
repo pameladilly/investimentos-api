@@ -60,4 +60,24 @@ public class CarteiraController {
         return new PageImpl<CarteiraResponseDTO>( list, pageRequest, result.getTotalElements());
     }
 
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void excluir( @PathVariable Long id) {
+
+        service.excluir(id);
+
+
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CarteiraResponseDTO atualizar(@PathVariable Long id, @RequestBody @Valid CarteiraRequestDTO carteiraRequestDTO){
+        Carteira carteira = modelMapper.map(carteiraRequestDTO, Carteira.class);
+
+        carteira = service.atualizar(id, carteira);
+
+        return modelMapper.map(carteira, CarteiraResponseDTO.class);
+
+
+    }
 }

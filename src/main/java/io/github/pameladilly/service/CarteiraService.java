@@ -11,9 +11,11 @@ public interface CarteiraService {
 
     Carteira salvar(Carteira carteira);
 
-    Carteira editar(Long id, Carteira carteira);
+    Carteira atualizar(Long id, Carteira carteira);
 
     Boolean excluir(Carteira carteira);
+
+    void excluir(Long id);
 
     Page<Carteira> pesquisar(Carteira filter, Pageable pageRequest);
 

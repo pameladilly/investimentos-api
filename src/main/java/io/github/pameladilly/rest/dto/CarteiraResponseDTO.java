@@ -21,5 +21,4 @@ public class CarteiraResponseDTO {
     private LocalDateTime ultimaAtualizacao;
     private Long usuario;
 
-    private UsuarioResponseDTO usuarioResponseDTO;
 }
