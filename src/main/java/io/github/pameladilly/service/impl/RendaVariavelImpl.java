@@ -86,4 +86,11 @@ public class RendaVariavelImpl implements RendaVariavelService {
 
         return repository.findById(id).orElseThrow(RendaVariavelNotFound::new);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+
+        return repository.existsById(id);
+
+    }
 }

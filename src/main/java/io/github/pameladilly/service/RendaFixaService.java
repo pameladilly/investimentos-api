@@ -17,5 +17,7 @@ public interface RendaFixaService {
 
     RendaFixa findById(Long id);
 
+    boolean existsById(Long id);
+
     //void excluir(Long id);
 }

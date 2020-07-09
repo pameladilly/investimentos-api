@@ -44,7 +44,9 @@ public class CarteiraServiceImpl implements CarteiraService {
     @Override
     public Carteira atualizar(Long id, Carteira carteira) {
 
-         return repository.findById(id).map( entity -> {
+
+
+         return repository.findById(carteira.getIdCarteira()).map( entity -> {
 
                     entity.setDescricao(carteira.getDescricao());
                     return repository.save(entity);

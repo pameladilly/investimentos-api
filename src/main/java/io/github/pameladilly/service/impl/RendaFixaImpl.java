@@ -82,4 +82,10 @@ public class RendaFixaImpl implements RendaFixaService {
         return repository.findById(id).orElseThrow(RendaFixaNotFound::new);
 
     }
+
+    @Override
+    public boolean existsById(Long id) {
+
+        return repository.existsById(id);
+    }
 }

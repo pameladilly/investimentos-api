@@ -3,7 +3,11 @@ package io.github.pameladilly.domain.entity;
 import io.github.pameladilly.domain.enums.TipoTransacao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.tomcat.jni.Local;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -28,6 +32,13 @@ public class Transacao {
     private BigDecimal total;
 
     private LocalDateTime data;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime dataCadastro;
+
+    @UpdateTimestamp
+    private LocalDateTime dataAtualizacao;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "TipoTransacao", length = 30)

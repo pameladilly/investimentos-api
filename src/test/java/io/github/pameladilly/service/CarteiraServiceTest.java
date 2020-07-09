@@ -5,6 +5,7 @@ import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.domain.repository.CarteiraRepository;
 import io.github.pameladilly.domain.repository.UsuarioRepository;
+import io.github.pameladilly.exception.carteira.CarteiraNotFound;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.service.impl.CarteiraServiceImpl;
 import org.assertj.core.api.Assertions;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Example;
@@ -26,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
@@ -43,6 +46,7 @@ public class CarteiraServiceTest {
 
     @BeforeEach
     public void setUp(){
+
         this.service = new CarteiraServiceImpl(repository, usuariosRepository);
     }
 
@@ -116,6 +120,80 @@ public class CarteiraServiceTest {
         Assertions.assertThat(result.getContent()).isEqualTo(lista);
         Assertions.assertThat(result.getPageable().getPageNumber()).isEqualTo(0);
         Assertions.assertThat(result.getPageable().getPageSize()).isEqualTo(10);
+
+    }
+
+    @Test
+    @DisplayName("Deve excluir uma carteira por id")
+    public void excluirCarteiraTest(){
+        Usuario usuario = getNewUsuario();
+        Carteira carteira = newCarteira(usuario);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.of(carteira));
+
+        org.junit.jupiter.api.Assertions.assertDoesNotThrow( () -> service.excluir(carteira.getIdCarteira()));
+
+        Mockito.verify( repository, Mockito.times(1)).delete(carteira);
+
+    }
+
+    @Test
+    @DisplayName("Excluir - Deve retornar exceção por carteira não encontrada por id")
+    public void naoExcluirCarteiraTest(){
+        Usuario usuario = getNewUsuario();
+        Carteira carteira = newCarteira(usuario);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        org.junit.jupiter.api.Assertions.assertThrows ( CarteiraNotFound.class, () -> service.excluir(carteira.getIdCarteira()));
+
+        Mockito.verify( repository, Mockito.never()).delete(carteira);
+
+    }
+
+    @Test
+    @DisplayName("Atualizar - Deve atualizar uma carteira")
+    public void atualizarCarteiraTest(){
+        Long id = 1L;
+
+        Usuario usuario = getNewUsuario();
+        Carteira carteiraSalvaMock = newCarteira(usuario);
+        carteiraSalvaMock.setIdCarteira(id);
+        carteiraSalvaMock.setDescricao("Carteira mockada");
+
+        Carteira carteiraAtualizada = newCarteira(usuario);
+        carteiraAtualizada.setDescricao("Carteira atualizada mock");
+        carteiraAtualizada.setIdCarteira(id);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.of(carteiraSalvaMock));
+        Mockito.when( repository.save(Mockito.any(Carteira.class))).thenReturn(carteiraAtualizada);
+
+        Carteira carteira = service.atualizar(carteiraAtualizada.getIdCarteira(), carteiraAtualizada);
+
+
+        Assertions.assertThat(carteira.getDescricao()).isEqualTo(carteiraAtualizada.getDescricao());
+
+
+
+    }
+
+    @Test
+    @DisplayName("Atualizar - Deve retornar exceção por carteira não encontrada")
+    public void naoAtualizarCarteiraTest(){
+        Long id = 1L;
+
+        Usuario usuario = getNewUsuario();
+
+        Carteira carteiraAtualizada = newCarteira(usuario);
+        carteiraAtualizada.setIdCarteira(id);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+
+        org.junit.jupiter.api.Assertions.assertThrows( CarteiraNotFound.class,
+                    () -> service.atualizar(carteiraAtualizada.getIdCarteira(), carteiraAtualizada) );
+
+        Mockito.verify( repository, Mockito.never()).save(carteiraAtualizada);
 
     }
 

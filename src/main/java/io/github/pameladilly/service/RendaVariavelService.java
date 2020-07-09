@@ -22,4 +22,6 @@ public interface RendaVariavelService {
     Page<RendaVariavel> pesquisar(RendaVariavel filter, Pageable pageRequest);
 
     RendaVariavel findById(Long id);
+
+    boolean existsById(Long id);
 }
