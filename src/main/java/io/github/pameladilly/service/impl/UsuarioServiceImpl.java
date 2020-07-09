@@ -95,6 +95,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         return repository.findById(id).orElseThrow(UsuarioNotFoundException::new);
     }
 
+    @Override
+    public Boolean existsById(Long id) {
+
+        return repository.existsById(id);
+    }
+
 
     private Usuario converter(UsuarioRequestDTO usuarioRequestDTO) {
         return Usuario.builder()

@@ -17,6 +17,8 @@ public interface UsuarioService {
 
     Usuario getUsuarioById(Long id);
 
+    Boolean existsById(Long id);
+
 
 
 }

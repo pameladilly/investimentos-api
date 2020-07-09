@@ -2,7 +2,9 @@ package io.github.pameladilly.domain.entity;
 
 import io.github.pameladilly.domain.enums.TipoTransacao;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.tomcat.jni.Local;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,6 +18,8 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @Data
+@Builder
+@NoArgsConstructor
 public class Transacao {
 
     @Id

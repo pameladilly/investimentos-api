@@ -84,4 +84,15 @@ public class CarteiraServiceImpl implements CarteiraService {
 
         return repository.findAll(example, pageRequest);
     }
+
+    @Override
+    public Boolean existsById(Long id) {
+
+        return repository.existsById(id);
+    }
+
+    @Override
+    public Carteira findById(Long id) {
+        return repository.findById(id).orElseThrow(CarteiraNotFound::new);
+    }
 }

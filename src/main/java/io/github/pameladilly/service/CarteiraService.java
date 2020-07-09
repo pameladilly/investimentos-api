@@ -19,5 +19,8 @@ public interface CarteiraService {
 
     Page<Carteira> pesquisar(Carteira filter, Pageable pageRequest);
 
+    Boolean existsById(Long id);
+
+    Carteira findById(Long id);
 
 }
