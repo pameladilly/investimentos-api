@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TransacaoResponseDTO {
 
+    private Long id;
     private String tipoTransacao;
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizacao;

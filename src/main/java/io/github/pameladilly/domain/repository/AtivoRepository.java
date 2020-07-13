@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface AtivoRepository extends JpaRepository<Ativo, Long> {
 
-    @Query(value = " SELECT * FROM ATIVO WHERE ID_ATIVO = :ID AND USUARIO_ID_USUARIO = :USUARIO ", nativeQuery = true)
-    Optional<Ativo> findByIdAndUsuario(@Param("ID") Long id, @Param( "USUARIO") Long usuario);
+    @Query(value = " SELECT a FROM Ativo AS a JOIN a.usuario AS u WHERE a.idAtivo = :idAtivo AND u.idUsuario = :idUsuario ")
+    Optional<Ativo> findByIdAndUsuario(@Param("idAtivo") Long id, @Param( "idUsuario") Long usuario);
 }

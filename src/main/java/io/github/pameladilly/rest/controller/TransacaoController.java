@@ -14,6 +14,8 @@ import org.omg.CORBA.TRANSACTION_MODE;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/api/transacao")
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class TransacaoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TransacaoResponseDTO salvar(@RequestBody TransacaoRequestDTO transacaoRequestDTO){
+    public TransacaoResponseDTO salvar(@RequestBody @Valid TransacaoRequestDTO transacaoRequestDTO){
 
         Transacao transacao = transacaoRequestDTOToTransacao(transacaoRequestDTO);
 
@@ -49,6 +51,7 @@ public class TransacaoController {
                 .ativo(ativo)
                 .carteira(carteira)
                 .tipoTransacao(TipoTransacao.valueOf(transacaoRequestDTO.getTipoTransacao()))
+                .data(transacaoRequestDTO.getData())
                 .quantidade(transacaoRequestDTO.getQuantidade())
                 .valorUnitario(transacaoRequestDTO.getValorUnitario())
                 .build();
@@ -58,6 +61,7 @@ public class TransacaoController {
     private TransacaoResponseDTO transacaoToTransacaoResponseDTO(Transacao transacao){
 
         return TransacaoResponseDTO.builder()
+                .id(transacao.getIdTransacao())
                 .ativo(transacao.getAtivo().getIdAtivo())
                 .carteira(transacao.getCarteira().getIdCarteira())
                 .usuario(transacao.getAtivo().getUsuario().getIdUsuario())

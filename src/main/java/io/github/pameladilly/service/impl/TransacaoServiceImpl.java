@@ -27,6 +27,7 @@ public class TransacaoServiceImpl implements TransacaoService {
     @Override
     public Transacao salvar(Transacao transacao) {
 
+        transacao.setTotal(transacao.getQuantidade().multiply(transacao.getValorUnitario()));
 
         return repository.save(transacao);
     }

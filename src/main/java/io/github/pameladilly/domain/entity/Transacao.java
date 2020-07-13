@@ -13,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -35,7 +36,7 @@ public class Transacao {
     @Column(precision = 10, scale = 3)
     private BigDecimal total;
 
-    private LocalDateTime data;
+    private LocalDate data;
 
     @CreationTimestamp
     @Column(updatable = false)
