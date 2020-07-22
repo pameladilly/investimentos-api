@@ -6,17 +6,22 @@ import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.rest.dto.CarteiraRequestDTO;
 import io.github.pameladilly.service.CarteiraService;
+import io.github.pameladilly.service.CarteiraServiceTest;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -24,6 +29,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,7 +55,7 @@ public class CarteiraControllerTest {
 
 
         Usuario usuario = UsuarioControllerTest.getNewUsuario();
-        Carteira carteira = Carteira.builder().descricao("Carteira Test").usuario(usuario).idCarteira(1L).build();
+        Carteira carteira = getNewCarteira(usuario);
 
 
         BDDMockito.given( carteiraService.salvar(Mockito.any(Carteira.class))).willReturn(carteira);
@@ -98,7 +105,7 @@ public class CarteiraControllerTest {
 
 
         Usuario usuario = UsuarioControllerTest.getNewUsuario();
-        Carteira carteira = Carteira.builder().descricao("Carteira Test").usuario(usuario).idCarteira(1L).build();
+        Carteira carteira = getNewCarteira(usuario);
 
 
         BDDMockito.given( carteiraService.salvar(Mockito.any(Carteira.class))).willThrow(new UsuarioNotFoundException());
@@ -118,6 +125,31 @@ public class CarteiraControllerTest {
                 .andExpect(jsonPath("errors", Matchers.hasSize(1)))
                 .andExpect(jsonPath("errors[0]", Matchers.containsString ("Usuário não encontrado na base de dados")));
 
+
+    }
+
+    private Carteira getNewCarteira(Usuario usuario) {
+        return Carteira.builder().descricao("Carteira Test").usuario(usuario).idCarteira(1L).build();
+    }
+
+    @Test
+    @DisplayName("/API/CARTEIRA - GET - Pesquisar carteira")
+    public void pesquisarCarteira() throws Exception {
+
+        Carteira carteira = getNewCarteira(UsuarioControllerTest.getNewUsuario());
+        carteira.setDescricao("Carteira Renda Fixa");
+
+        BDDMockito.given( carteiraService.pesquisar(Mockito.any(Carteira.class), Mockito.any(Pageable.class)))
+                .willReturn(new PageImpl<Carteira>(Arrays.asList(carteira), PageRequest.of(0,100), 1));
+
+        String queryString = String.format("?descricao=%s&page=0&size=100",
+                carteira.getDescricao());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(CARTEIRA_API.concat(queryString))
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform( request )
+                .andExpect( MockMvcResultMatchers.status().isOk());
 
     }
 

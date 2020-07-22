@@ -1,7 +1,6 @@
 package io.github.pameladilly.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sun.xml.internal.ws.api.model.MEP;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -5,13 +5,12 @@ import io.github.pameladilly.rest.dto.CredenciaisRequestDTO;
 import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
 import io.github.pameladilly.rest.dto.UsuarioResponseDTO;
 import io.github.pameladilly.service.UsuarioService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.usagetracker.UsageTrackerClient;
 
 import javax.validation.Valid;
 
