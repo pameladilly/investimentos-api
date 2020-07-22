@@ -1,5 +1,5 @@
 # investimentos-api
-https://travis-ci.org/pameladilly/investimentos-api.svg?branch=master
+[![Build Status](https://travis-ci.org/pameladilly/investimentos-api.svg?branch=master)](https://travis-ci.org/pameladilly/investimentos-api)
 
 Aplicação para controle patrimonial de investimentos em Renda Fixa e Renda Variável.
 
