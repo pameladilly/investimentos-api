@@ -7,7 +7,7 @@ Em construção...
 
 Tecnologias:
 Java, Spring Boot, Spring Data JPA, Maven, JUnit, Mockito.
-ORM
+CI através do Travis CI
 
 IDE:
 IntelliJ IDEA.
