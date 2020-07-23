@@ -2,13 +2,19 @@ package io.github.pameladilly.service;
 
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.domain.repository.UsuarioRepository;
+import io.github.pameladilly.exception.usuario.SenhaInvalidaException;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
+import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
+import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
+import io.github.pameladilly.rest.dto.UsuarioResponseDTO;
 import io.github.pameladilly.service.impl.UsuarioServiceImpl;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AssertionsKt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -108,25 +114,111 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    @DisplayName("Tenta atualizar usuário com senhas diferentes")
-    public void atualizarUsuarioSenhasNaoBatem(){
-        Usuario usuario = Usuario.builder()
+    @DisplayName("Carregar usuário")
+    public void carregarUsuario(){
 
-                .senha("123")
-                .login("outro")
-                .email("usuario@email.com")
-                .nome("Rafaela")
-                .build();
+        Usuario usuario = createNewUsuario();
+        usuario.setIdUsuario(1L);
+
+        String login = "teste@teste";
+
+        usuario.setLogin(login);
+
+        String senha = "123";
+
+        usuario.setSenha(senha);
+
+        Mockito.when( repository.findByLogin(Mockito.anyString())).thenReturn( Optional.of( usuario) );
+
+        Usuario usuarioFind = service.carregar(login, senha);
 
 
-        Throwable exception = Assertions.catchThrowable( () ->
-                service.atualizar(1L, usuario, "456"));
+        Assertions.assertThat(usuarioFind).isNotNull();
 
-        Assertions.assertThat(exception)
-                .isInstanceOf( SenhasNaoConferemException.class);
+    }
 
-        Mockito.verify( repository, Mockito.never()).save( usuario );
+    @Test
+    @DisplayName("Lançar exceção ao tentar carregar usuário com senha que não confere")
+    public void carregarUsuarioSenhaInvalida(){
+
+        Usuario usuario = createNewUsuario();
+        usuario.setIdUsuario(1L);
+
+        String login = "teste@teste";
+
+        usuario.setLogin(login);
+
+        String senha = "123";
+
+        usuario.setSenha(senha);
+
+        Mockito.when( repository.findByLogin(Mockito.anyString())).thenReturn( Optional.of( usuario) );
+
+
+        org.junit.jupiter.api.Assertions.assertThrows( SenhaInvalidaException.class, () -> service.carregar(login, "4560"));
+
+        Mockito.verify( repository, Mockito.never()).save(Mockito.any());
+    }
+
+    @Test
+    @DisplayName("Alterar senha")
+    public void alterarSenha(){
+
+        Usuario usuario = createNewUsuario();
+        usuario.setIdUsuario(1L);
+        usuario.setSenha("123");
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn( Optional.of( usuario) );
+        Mockito.when( repository.save( Mockito.any(Usuario.class))).thenReturn( usuario );
+
+        Boolean senhaAlterada = service.alterarSenha(1L, "456", "456");
+
+        Assertions.assertThat(senhaAlterada).isTrue();
 
 
     }
+
+    @Test
+    @DisplayName("Lançar exceção por alterar senhas que não batem")
+    public void alterarSenhaNaoBatem(){
+
+        Usuario usuario = createNewUsuario();
+        usuario.setIdUsuario(1L);
+        usuario.setSenha("123");
+
+
+        Throwable exception = Assertions.catchThrowable( () -> service.alterarSenha(1L, "123", "1234"));
+
+
+        Assertions.assertThat(exception).isInstanceOf(SenhasNaoConferemException.class);
+
+        Mockito.verify( repository, Mockito.never()).save(Mockito.any());
+
+    }
+
+    @Test
+    @DisplayName("Excluir usuário ")
+    public void excluirUsuario(){
+
+        Usuario usuario = createNewUsuario();
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.of(usuario));
+
+
+        org.junit.jupiter.api.Assertions.assertDoesNotThrow( () -> service.excluir(1L) );
+
+        Mockito.verify( repository, Mockito.times(1)).delete(Mockito.any());
+    }
+
+    @Test
+    @DisplayName("Excluir usuário inexistente")
+    public void excluirUsuarioInexistente(){
+
+
+        org.junit.jupiter.api.Assertions.assertThrows( UsuarioNotFoundException.class, () -> service.excluir(1L));
+
+        Mockito.verify( repository, Mockito.never()).delete(Mockito.any());
+
+    }
+
+
 }
