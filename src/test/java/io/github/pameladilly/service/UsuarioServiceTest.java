@@ -220,5 +220,64 @@ public class UsuarioServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Buscar usuário por Id")
+    public void buscarUsuarioId(){
+
+        Usuario usuarioMock = createNewUsuario();
+        usuarioMock.setIdUsuario(1L);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.of(usuarioMock));
+
+        Usuario usuario = org.junit.jupiter.api.Assertions.assertDoesNotThrow( () -> service.getUsuarioById(1L));
+
+        Assertions.assertThat(usuario).isNotNull();
+
+
+    }
+
+    @Test
+    @DisplayName("Lançar exceção por usuário não encontrado")
+    public void buscarUsuarioExcecao(){
+
+        Usuario usuarioMock = createNewUsuario();
+        usuarioMock.setIdUsuario(1L);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        Throwable exception = Assertions.catchThrowable( () -> service.getUsuarioById(1L));
+
+        Assertions.assertThat(exception)
+                .isInstanceOf(UsuarioNotFoundException.class)
+                .hasMessage(UsuarioNotFoundException.MSG);
+
+
+    }
+
+    @Test
+    @DisplayName("Verificar se usuário existe")
+    public void verificarUsuarioExiste(){
+
+
+        Mockito.when( repository.existsById(Mockito.anyLong())).thenReturn( true);
+
+        Boolean existe = service.existsById(1L);
+
+        Assertions.assertThat(existe).isTrue();
+    }
+
+    @Test
+    @DisplayName("Retornar falso por usuário inexistente")
+    public void verificarUsuarioInexisten(){
+
+        Mockito.when( repository.existsById(Mockito.anyLong())).thenReturn( false);
+
+        Boolean existe = service.existsById(1L);
+
+        Assertions.assertThat(existe).isFalse();
+
+    }
+
+
 
 }
