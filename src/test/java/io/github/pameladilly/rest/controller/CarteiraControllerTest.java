@@ -3,6 +3,8 @@ package io.github.pameladilly.rest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.domain.entity.Usuario;
+import io.github.pameladilly.domain.repository.CarteiraRepository;
+import io.github.pameladilly.exception.carteira.CarteiraNotFound;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.rest.dto.CarteiraRequestDTO;
 import io.github.pameladilly.service.CarteiraService;
@@ -30,7 +32,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,6 +52,9 @@ public class CarteiraControllerTest {
 
     @MockBean
     CarteiraService carteiraService;
+
+    @MockBean
+    CarteiraRepository repository;
 
     @Test
     @DisplayName("/API/CARTEIRA - POST - Salvar carteira")
@@ -129,7 +136,7 @@ public class CarteiraControllerTest {
     }
 
     private Carteira getNewCarteira(Usuario usuario) {
-        return Carteira.builder().descricao("Carteira Test").usuario(usuario).idCarteira(1L).build();
+        return Carteira.builder().descricao("Carteira Test").usuario(usuario).idCarteira(1L).dataCadastro(LocalDateTime.now()).ultimaAtualizacao(LocalDateTime.now()).build();
     }
 
     @Test
@@ -152,6 +159,90 @@ public class CarteiraControllerTest {
                 .andExpect( MockMvcResultMatchers.status().isOk());
 
     }
+
+    @Test
+    @DisplayName("/API/CARTEIRA - DELETE - Excluir Carteira")
+    public void excluirCarteira() throws Exception{
+
+        Carteira carteiraMock = getNewCarteira(Mockito.any());
+
+
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CARTEIRA_API.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform( request )
+                .andExpect( MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DisplayName("/API/CARTEIRA - DELETE - Excluir Carteira inexistente")
+    public void excluirCarteiraInexiste() throws Exception{
+
+
+        BDDMockito.doThrow(CarteiraNotFound.class).when(carteiraService).excluir(Mockito.anyLong());
+
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(CARTEIRA_API.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform( request )
+                .andExpect( MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("/API/CARTEIRA - PUT - Atualizar carteira")
+    public void atualizarCarteira() throws Exception{
+
+        Usuario usuario = UsuarioControllerTest.getNewUsuario();
+        Carteira carteira = getNewCarteira(usuario);
+        carteira.setDescricao("Carteira Teste 1");
+        carteira.setIdCarteira(1L);
+
+        BDDMockito.given( carteiraService.atualizar(Mockito.anyLong(), Mockito.any(Carteira.class))).willReturn( carteira);
+
+        CarteiraRequestDTO carteiraRequestDTO = newCarteiraRequestDTO();
+        carteiraRequestDTO.setIdUsuario(1L);
+
+        String json = new ObjectMapper().writeValueAsString(carteiraRequestDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CARTEIRA_API.concat("/" + 1L))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk()).andExpect(jsonPath("descricao").value(carteira.getDescricao()))
+                .andExpect(jsonPath("usuario").value(usuario.getIdUsuario()))
+                .andExpect(jsonPath("ultimaAtualizacao").isNotEmpty())
+                .andExpect(jsonPath("dataCadastro").isNotEmpty());
+
+
+
+    }
+
+    @Test
+    @DisplayName("/API/CARTEIRA - PUT - Atualizar carteira inexistente")
+    public void atualizarCarteiraInexistente() throws Exception{
+
+        BDDMockito.given( carteiraService.atualizar(Mockito.anyLong(), Mockito.any())).willThrow(new CarteiraNotFound());
+
+        CarteiraRequestDTO carteiraRequestDTO = newCarteiraRequestDTO();
+        carteiraRequestDTO.setIdUsuario(1L);
+
+        String json = new ObjectMapper().writeValueAsString(carteiraRequestDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(CARTEIRA_API.concat("/" + 1L))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("errors[0]").value(CarteiraNotFound.MSG));
+
+    }
+
 
     private CarteiraRequestDTO newCarteiraRequestDTO() {
 

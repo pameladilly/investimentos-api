@@ -8,6 +8,8 @@ import io.github.pameladilly.rest.dto.CredenciaisRequestDTO;
 import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
 import io.github.pameladilly.service.UsuarioService;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AssertionsKt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -169,6 +171,21 @@ public class UsuarioControllerTest {
         mockMvc.perform( request )
                 .andExpect( MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("errors", Matchers.hasSize(1)));
+
+
+    }
+
+    @Test
+    @DisplayName("/API/USUARIOS/{id} - DELETE - Excluir usuário inexistente")
+    public void excluirUsuario() throws Exception{
+        Long id = 1L;
+
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .delete(USUARIO_API.concat("/" + id));
+
+        mockMvc.perform( request )
+                .andExpect( MockMvcResultMatchers.status().isOk());
 
 
     }

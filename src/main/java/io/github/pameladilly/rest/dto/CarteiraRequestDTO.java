@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class CarteiraRequestDTO {
 
     @NotEmpty( message = "Informe a descrição")

@@ -4,7 +4,10 @@ import org.omg.SendingContext.RunTime;
 
 public class CarteiraNotFound extends RuntimeException {
 
+
+    public static final String MSG = "Carteira não encontrada na base de dados.";
+
     public CarteiraNotFound() {
-        super("Carteira não encontrada na base de dados.");
+        super(MSG);
     }
 }

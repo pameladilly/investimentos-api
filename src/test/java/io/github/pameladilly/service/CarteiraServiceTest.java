@@ -197,4 +197,39 @@ public class CarteiraServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Deve encontrar uma carteira por Id")
+    public void encontrarCarteiraId(){
+
+        Carteira carteiraMock = newCarteira(getNewUsuario());
+        carteiraMock.setIdCarteira(1L);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn( Optional.of(carteiraMock));
+        Carteira carteira = service.findById(1L);
+
+        Assertions.assertThat(carteira).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção por carteira não encontrada por Id")
+    public void encontrarCarteiraIdExcecao(){
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn( Optional.empty() );
+
+        org.junit.jupiter.api.Assertions.assertThrows(CarteiraNotFound.class , () -> service.findById(1L));
+
+    }
+
+    @Test
+    @DisplayName("Verificar se carteira existe")
+    public void verificarSeExisteCarteira(){
+
+        Mockito.when( repository.existsById(Mockito.anyLong())).thenReturn( true);
+
+        Boolean existe = service.existsById(1L);
+
+        Assertions.assertThat(existe).isTrue();
+
+    }
+
 }
