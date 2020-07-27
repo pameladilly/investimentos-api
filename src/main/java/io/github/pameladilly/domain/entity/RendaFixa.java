@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @PrimaryKeyJoinColumn(name = "idAtivo")
 @Getter
 @Setter
+
 public class RendaFixa extends Ativo {
 
   /*  public RendaFixa(Long idAtivo, String descricao, LocalDateTime dataCadastro, TipoAtivo tipoAtivo, Usuario usuario){

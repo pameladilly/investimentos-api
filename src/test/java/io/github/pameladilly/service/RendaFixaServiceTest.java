@@ -115,7 +115,6 @@ public class RendaFixaServiceTest {
         RendaFixa rendaFixaMock = newRendaFixa(usuario, LocalDate.of(2025, 1, 1));
         rendaFixaMock.setIdAtivo(null);
 
-       // Mockito.when( service.excluir(rendaFixaMock)).thenThrow(new RendaFixaNotFound());
         org.junit.jupiter.api.Assertions.assertThrows( RendaFixaNotFound.class, () -> service.excluir(rendaFixaMock));
 
         Mockito.verify( repository, Mockito.never()).delete(rendaFixaMock);
@@ -147,4 +146,8 @@ public class RendaFixaServiceTest {
 
         Mockito.verify( repository, Mockito.never()).delete(rendaFixaMock);
     }
+
+
+
+
 }

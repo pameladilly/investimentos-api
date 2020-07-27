@@ -3,13 +3,18 @@ package io.github.pameladilly.rest.controller;
 import io.github.pameladilly.domain.entity.RendaFixa;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.domain.enums.TipoAtivo;
+import io.github.pameladilly.exception.carteira.CarteiraNotFound;
 import io.github.pameladilly.exception.rendafixa.RendaFixaNotFound;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.rest.dto.RendaFixaRequestDTO;
 import io.github.pameladilly.service.RendaFixaService;
 import io.github.pameladilly.service.UsuarioService;
+import io.github.pameladilly.service.UsuarioServiceTest;
+import org.apache.tomcat.jni.Local;
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AssertionsKt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -31,6 +39,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -248,6 +258,60 @@ public class RendaFixaControllerTest {
 
         mockMvc.perform( request )
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("/API/RENDAFIXA - DELETE - Deve retornar excluir um ativo de renda fixa")
+    public void excluirRendaFixa() throws Exception{
+
+
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(RENDAFIXA_API.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform( request )
+                .andExpect( MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DisplayName("/API/RENDAFIXA - DELETE - Deve retornar not found ao tentar exlcuir renda fixa inexiste")
+    public void excluirRendaFixaInexistente() throws Exception{
+
+        BDDMockito.doThrow( new RendaFixaNotFound()).when(rendaFixaService).excluir( Mockito.any());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(RENDAFIXA_API.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform( request )
+                .andExpect( MockMvcResultMatchers.status().isNotFound())
+                .andExpect( MockMvcResultMatchers.jsonPath("errors[0]").value( RendaFixaNotFound.MSG));
+
+
+    }
+
+    @Test
+    @DisplayName("/API/RENDAFIXA - GET - Deve pesquisa ativo de renda")
+    public void pesquisarRendaFixa() throws Exception{
+
+        Usuario usuario = UsuarioServiceTest.createNewUsuario();
+        usuario.setIdUsuario(1L);
+
+        RendaFixa rendaFixaMock = new RendaFixa(1L, "Tesouro Selic teste",
+                LocalDateTime.now(), LocalDateTime.now(), TipoAtivo.RENDAFIXA,
+                usuario, BigDecimal.valueOf(0.02), LocalDate.of(2025, 1, 12), BigDecimal.valueOf(500.00),  BigDecimal.valueOf(0.50));
+
+        BDDMockito.given( rendaFixaService.pesquisar(Mockito.any(RendaFixa.class), Mockito.any(Pageable.class)))
+                .willReturn( new PageImpl<>(Collections.singletonList(rendaFixaMock), PageRequest.of(0, 100), 1));
+
+        String descricao = "Selic";
+
+        String queryString = String.format("?descricao=%s&page=0&size=100", descricao);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(RENDAFIXA_API.concat(queryString)).accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform( request ).andExpect( MockMvcResultMatchers.status().isOk());
+
     }
 
 
