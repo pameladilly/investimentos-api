@@ -1,7 +1,6 @@
 package io.github.pameladilly.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.deploy.net.CanceledDownloadException;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
@@ -9,13 +8,10 @@ import io.github.pameladilly.rest.dto.CredenciaisRequestDTO;
 import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
 import io.github.pameladilly.service.UsuarioService;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.AssertionsKt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
