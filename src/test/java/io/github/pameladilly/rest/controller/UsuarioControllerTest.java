@@ -1,6 +1,7 @@
 package io.github.pameladilly.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.deploy.net.CanceledDownloadException;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
@@ -219,6 +220,45 @@ public class UsuarioControllerTest {
                 .andExpect( MockMvcResultMatchers.status().isOk() )
                 .andExpect( MockMvcResultMatchers.jsonPath("nome").value(usuarioRequestDTO.getNome()) )
                 .andExpect( MockMvcResultMatchers.jsonPath( "email").value(usuarioRequestDTO.getEmail()));
+
+    }
+
+    @Test
+    @DisplayName("/API/USUARIOS/{id} - GET - Retornar um usuário por id")
+    public void getUsuarioPorId() throws Exception{
+
+        String nome = "Meu usuário";
+        String email = "meusuario@gmail.com";
+        Long id = 1L;
+
+        Usuario usuarioMock = getNewUsuario();
+        usuarioMock.setNome(nome);
+        usuarioMock.setEmail(email);
+        usuarioMock.setIdUsuario(id);
+
+
+        BDDMockito.given( service.getUsuarioById(Mockito.anyLong())).willReturn(usuarioMock);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(USUARIO_API.concat("/" + id));
+
+        mockMvc.perform( request )
+                .andExpect( MockMvcResultMatchers.status().isOk() )
+                .andExpect( MockMvcResultMatchers.jsonPath("id").value(usuarioMock.getIdUsuario()))
+                .andExpect( MockMvcResultMatchers.jsonPath("email").value(usuarioMock.getEmail()));
+    }
+
+    @Test
+    @DisplayName("/API/USUARIOS/{id} - GET - Retornar not found ao buscar usuário por id")
+    public void getUsuarioPorIdInexistente() throws Exception{
+
+        BDDMockito.given( service.getUsuarioById(Mockito.anyLong())).willThrow(new UsuarioNotFoundException());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(USUARIO_API.concat("/" + 1L));
+
+        mockMvc.perform( request )
+                .andExpect( MockMvcResultMatchers.status().isNotFound() );
 
     }
 
