@@ -11,14 +11,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @ActiveProfiles(value = "test")
@@ -189,8 +194,19 @@ public class RendaVariavelServiceTest {
     }
 
     @Test
-    @DisplayName("Lançar exceção ao excluir renda varíavel")
+    @DisplayName("Lançar exceção ao excluir renda varíavel inexistente")
     public void excluirPorObjetoInexistente(){
+
+        Usuario usuario = UsuarioServiceTest.createNewUsuario();
+        usuario.setIdUsuario(1L);
+        RendaVariavel rendaVariavel = createRendaVariavel(usuario);
+        rendaVariavel.setIdAtivo(1L);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        org.junit.jupiter.api.Assertions.assertThrows( RendaVariavelNotFound.class, () -> service.excluir(rendaVariavel));
+
+        Mockito.verify( repository, Mockito.never()).delete(Mockito.any(RendaVariavel.class));
 
     }
 
@@ -198,11 +214,29 @@ public class RendaVariavelServiceTest {
     @DisplayName("Encontrar por Id")
     public void encontrarPorId(){
 
+        Usuario usuario = UsuarioServiceTest.createNewUsuario();
+        usuario.setIdUsuario(1L);
+        RendaVariavel rendaVariavel = createRendaVariavel(usuario);
+        rendaVariavel.setIdAtivo(1L);
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.of(rendaVariavel));
+
+        RendaVariavel rendaVariavelEncontrada = service.findById(1L);
+
+
+        Assertions.assertThat(rendaVariavelEncontrada).isNotNull();
+        Assertions.assertThat(rendaVariavelEncontrada.getIdAtivo()).isEqualTo(1L);
+
     }
 
     @Test
     @DisplayName("Lançar exceção ao não encontrar por Id")
     public void lancarExcecaoAoNaoEncontrarPorId(){
+
+        Mockito.when( repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        org.junit.jupiter.api.Assertions.assertThrows(RendaVariavelNotFound.class, () ->service.findById(1L));
+
 
     }
 
@@ -210,11 +244,35 @@ public class RendaVariavelServiceTest {
     @DisplayName("Existe por id")
     public void existePorId(){
 
+        Mockito.when( repository.existsById(Mockito.anyLong())).thenReturn( true );
+
+        boolean existe = service.existsById(1L);
+
+        Assertions.assertThat(existe).isTrue();
+
     }
 
     @Test
     @DisplayName("Pesquisar")
     public void pesquisar(){
+
+        Usuario usuario = UsuarioServiceTest.createNewUsuario();
+        usuario.setIdUsuario(1L);
+        RendaVariavel rendaVariavelMock = createRendaVariavel(usuario);
+        rendaVariavelMock.setIdAtivo(1L);
+
+        PageRequest pageRequest = PageRequest.of(0,10);
+        List<RendaVariavel> lista = Arrays.asList(rendaVariavelMock);
+        Page<RendaVariavel> page = new PageImpl<>(lista, PageRequest.of(0, 10), 1);
+
+        Mockito.when( repository.findAll(Mockito.any(Example.class), Mockito.any(PageRequest.class))).thenReturn( page);
+
+        Page<RendaVariavel> result = service.pesquisar(rendaVariavelMock, pageRequest);
+
+        Assertions.assertThat(result.getTotalElements()).isEqualTo(1);
+        Assertions.assertThat(result.getContent()).isEqualTo(lista);
+        Assertions.assertThat(result.getPageable().getPageSize()).isEqualTo(10);
+        Assertions.assertThat(result.getPageable().getPageNumber()).isEqualTo(0);
 
     }
 
