@@ -57,7 +57,12 @@ public class RendaVariavelImpl implements RendaVariavelService {
     @Override
     public void excluir(RendaVariavel rendaVariavel) {
 
+        if(! repository.findById(rendaVariavel.getIdAtivo()).isPresent()) {
+            throw new RendaVariavelNotFound();
+        }
+
         repository.delete(rendaVariavel);
+
     }
 
     @Override
