@@ -5,16 +5,12 @@ import io.github.pameladilly.domain.repository.UsuarioRepository;
 import io.github.pameladilly.exception.usuario.SenhaInvalidaException;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
-import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
-import io.github.pameladilly.rest.dto.UsuarioResponseDTO;
 import io.github.pameladilly.service.impl.UsuarioServiceImpl;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AssertionsKt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -193,6 +189,22 @@ public class UsuarioServiceTest {
         Assertions.assertThat(exception).isInstanceOf(SenhasNaoConferemException.class);
 
         Mockito.verify( repository, Mockito.never()).save(Mockito.any());
+
+    }
+
+    @Test
+    @DisplayName("Lançar exceção ao atualizar usuário com senhas que não batem")
+    public void atualizarUsuarioSenhasInvalidas(){
+        Usuario usuario = createNewUsuario();
+        usuario.setIdUsuario(1L);
+        usuario.setSenha("123");
+
+        org.junit.jupiter.api.Assertions.assertThrows(
+                SenhasNaoConferemException.class, () -> service.atualizar(1L, usuario, "456"));
+
+
+
+        Mockito.verify( repository, Mockito.never()).save(usuario);
 
     }
 
