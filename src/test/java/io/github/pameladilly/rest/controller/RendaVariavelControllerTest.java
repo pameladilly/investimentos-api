@@ -190,6 +190,85 @@ public class RendaVariavelControllerTest {
                 .andExpect( MockMvcResultMatchers.jsonPath("errors[0]", Matchers.containsStringIgnoringCase("Usuário não encontrado")));
     }
 
+    @Test
+    @DisplayName("/API/RENDAVARIAVEL - PUT - Atualizar renda variável")
+    public void atualizarRendaVariavel() throws Exception{
+
+        Usuario usuario = UsuarioServiceTest.createNewUsuario();
+        usuario.setIdUsuario(1L);
+
+        RendaVariavel rendaVariavelMock = RendaVariavelServiceTest.createRendaVariavel(usuario);
+
+        RendaVariavelRequestDTO rendaVariavelRequestDTO = createRendaVariavelRequestDTO();
+
+        String json = new ObjectMapper().writeValueAsString(rendaVariavelRequestDTO);
+
+        BDDMockito.given( service.atualizar(Mockito.any())).willReturn(rendaVariavelMock);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(API_RENDAVARIAVEL)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform( request ).andExpect( MockMvcResultMatchers.status().isOk())
+                .andExpect( MockMvcResultMatchers.jsonPath( "descricao").value(rendaVariavelMock.getDescricao()))
+                .andExpect( MockMvcResultMatchers.jsonPath( "usuario").value(rendaVariavelMock.getUsuario().getIdUsuario()));
+
+    }
+
+    @Test
+    @DisplayName("/API/RENDAVARIAVEL - PUT - Deve retornar not found por  usuário inexistente")
+    public void atualizarRendaVariavelUsuarioInexistente() throws Exception{
+
+        RendaVariavelRequestDTO rendaVariavelRequestDTO = createRendaVariavelRequestDTO();
+
+        String json = new ObjectMapper().writeValueAsString(rendaVariavelRequestDTO);
+
+        BDDMockito.given( usuarioService.getUsuarioById(Mockito.anyLong())).willThrow(new UsuarioNotFoundException());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(API_RENDAVARIAVEL)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform( request ).andExpect( MockMvcResultMatchers.status().isNotFound())
+                .andExpect( MockMvcResultMatchers.jsonPath("errors[0]", Matchers.containsStringIgnoringCase("Usuário não encontrado")));
+
+
+    }
+
+    @Test
+    @DisplayName("/API/RENDAVARIAVEL - PATCH - Atualizar cotação")
+    public void atualizarCotacao(){
+
+    }
+
+    @Test
+    @DisplayName("/API/RENDAVARIAVEL - PATCH - Retornar not found ao atualizar cotação ativo inexistente")
+    public void atualizarCotacaoAtivoInexisten(){
+
+    }
+
+    @Test
+    @DisplayName("/API/RENDAVARIAVEL - PATCH - Retornar bad request por campos não informados")
+    public void atualizarCotacaoCamposNaoInformados(){
+
+    }
+
+
+    @Test
+    @DisplayName("/API/RENDAVARIAVEL - DELETE - Excluir renda variável")
+    public void excluirRendaVariavel(){
+
+    }
+
+    @Test
+    @DisplayName("/API/RENDAVARIAVEL - DELETE - Retornar not found para renda variável inexistente")
+    public void excluirRendaVariavelInexistente(){
+
+    }
 
     public RendaVariavelRequestDTO createRendaVariavelRequestDTO() {
         return RendaVariavelRequestDTO.builder().cotacao(BigDecimal.valueOf(56.90)).ticker("WEGE3").descricao("Weg S.A").usuario(1L).build();
