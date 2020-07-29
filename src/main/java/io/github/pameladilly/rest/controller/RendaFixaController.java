@@ -96,9 +96,11 @@ public class RendaFixaController {
 
     }
 
-    @GetMapping
+    @GetMapping(value = "{usuario}")
     @ResponseStatus(HttpStatus.OK)
-    public Page<RendaFixaResponseDTO> pesquisar(RendaFixaRequestDTO rendaFixaRequestDTO, Pageable pageRequest){
+    public Page<RendaFixaResponseDTO> pesquisar(@PathVariable(name = "usuario") Long usuario, RendaFixaRequestDTO rendaFixaRequestDTO, Pageable pageRequest){
+
+        rendaFixaRequestDTO.setUsuario(usuario);
 
         RendaFixa filter = rendaFixaRequestDTOToRendaFixa(rendaFixaRequestDTO);
 

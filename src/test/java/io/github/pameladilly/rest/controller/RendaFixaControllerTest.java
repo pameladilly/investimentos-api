@@ -3,23 +3,18 @@ package io.github.pameladilly.rest.controller;
 import io.github.pameladilly.domain.entity.RendaFixa;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.domain.enums.TipoAtivo;
-import io.github.pameladilly.exception.carteira.CarteiraNotFound;
 import io.github.pameladilly.exception.rendafixa.RendaFixaNotFound;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.rest.dto.RendaFixaRequestDTO;
 import io.github.pameladilly.service.RendaFixaService;
 import io.github.pameladilly.service.UsuarioService;
 import io.github.pameladilly.service.UsuarioServiceTest;
-import org.apache.tomcat.jni.Local;
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.AssertionsKt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,7 +34,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 
 @ExtendWith(SpringExtension.class)
@@ -308,9 +302,28 @@ public class RendaFixaControllerTest {
         String queryString = String.format("?descricao=%s&page=0&size=100", descricao);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(RENDAFIXA_API.concat(queryString)).accept(MediaType.APPLICATION_JSON);
+                .get(RENDAFIXA_API.concat("/" + 1L + queryString)).accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform( request ).andExpect( MockMvcResultMatchers.status().isOk());
+
+    }
+
+    @Test
+    @DisplayName("/API/RENDAFIXA - GET - Deve retornar not found por usuário inexistente")
+    public void pesquisarUsuarioInexistente() throws Exception{
+
+        BDDMockito.given( usuarioService.getUsuarioById(Mockito.anyLong())).willThrow( new UsuarioNotFoundException());
+
+
+        String descricao = "Selic";
+
+        String queryString = String.format("?descricao=%s&page=0&size=100", descricao);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(RENDAFIXA_API.concat("/" + 1L + queryString)).accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform( request ).andExpect( MockMvcResultMatchers.status().isNotFound())
+                .andExpect( MockMvcResultMatchers.jsonPath("errors[0]", Matchers.containsStringIgnoringCase("Usuário não encontrado")));
 
     }
 
