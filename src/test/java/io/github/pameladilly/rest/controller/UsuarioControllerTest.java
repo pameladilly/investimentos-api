@@ -2,6 +2,7 @@ package io.github.pameladilly.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.pameladilly.domain.entity.Usuario;
+import io.github.pameladilly.exception.usuario.SenhaInvalidaException;
 import io.github.pameladilly.exception.usuario.SenhasNaoConferemException;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.rest.dto.CredenciaisRequestDTO;
@@ -150,6 +151,30 @@ public class UsuarioControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("email").value("usuario@test.com"));
 
 
+
+    }
+
+    @Test
+    @DisplayName("/API/USUARIOS/AUTH - POST - Deve retornar não autorizado ao autenticar usuário")
+    public void usuarioNaoAutorizado() throws Exception{
+
+        CredenciaisRequestDTO credenciaisRequestDTO = CredenciaisRequestDTO.builder().login("user01").senha("123").build();
+        Usuario usuarioAutenticacao = getNewUsuario();
+        usuarioAutenticacao.setSenha("123");
+        usuarioAutenticacao.setLogin("user01");
+
+        BDDMockito.given( service.carregar(Mockito.anyString(), Mockito.anyString())).willThrow(new SenhaInvalidaException());
+
+        String json = new ObjectMapper().writeValueAsString(credenciaisRequestDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(USUARIO_API.concat("/auth"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform( request ).andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect( MockMvcResultMatchers.jsonPath("errors[0]", Matchers.containsStringIgnoringCase("Senha inválida")));
 
     }
 
