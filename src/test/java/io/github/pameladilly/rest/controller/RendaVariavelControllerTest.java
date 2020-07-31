@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.pameladilly.domain.entity.RendaVariavel;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.domain.repository.RendaVariavelRepository;
+import io.github.pameladilly.exception.rendavariavel.RendaVariavelNotFound;
 import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.rest.dto.RendaVariavelRequestDTO;
 import io.github.pameladilly.service.RendaVariavelService;
@@ -241,33 +242,108 @@ public class RendaVariavelControllerTest {
 
     @Test
     @DisplayName("/API/RENDAVARIAVEL - PATCH - Atualizar cotação")
-    public void atualizarCotacao(){
+    public void atualizarCotacao() throws Exception{
+
+        BigDecimal cotacao = BigDecimal.valueOf(67.98);
+
+
+        Usuario usuario = UsuarioServiceTest.createNewUsuario();
+        usuario.setIdUsuario(1L);
+
+        RendaVariavel rendaVariavelMock = RendaVariavelServiceTest.createRendaVariavel(usuario);
+        rendaVariavelMock.setCotacao(cotacao);
+
+
+        BDDMockito.given( service.atualizarCotacao(Mockito.anyLong(), Mockito.any())).willReturn(rendaVariavelMock);
+
+        JSONObject json = new JSONObject();
+
+        json.put("cotacao", cotacao);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .patch(API_RENDAVARIAVEL.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.toString());
+
+        mockMvc.perform( request ).andExpect( MockMvcResultMatchers.status().isOk())
+                .andExpect( MockMvcResultMatchers.jsonPath( "cotacao").value(cotacao));
 
     }
 
     @Test
     @DisplayName("/API/RENDAVARIAVEL - PATCH - Retornar not found ao atualizar cotação ativo inexistente")
-    public void atualizarCotacaoAtivoInexisten(){
+    public void atualizarCotacaoAtivoInexisten() throws Exception{
 
+        BigDecimal cotacao = BigDecimal.valueOf( 67.98);
+
+        JSONObject json = new JSONObject();
+
+        json.put("cotacao", cotacao);
+
+        BDDMockito.given( service.atualizarCotacao(Mockito.anyLong(), Mockito.any())).willThrow(new RendaVariavelNotFound());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .patch(API_RENDAVARIAVEL.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.toString());
+
+        mockMvc.perform( request ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @DisplayName("/API/RENDAVARIAVEL - PATCH - Retornar bad request por campos não informados")
-    public void atualizarCotacaoCamposNaoInformados(){
+    public void atualizarCotacaoCamposNaoInformados() throws Exception{
+
+
+        JSONObject json = new JSONObject();
+
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .patch(API_RENDAVARIAVEL.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.toString());
+
+        mockMvc.perform( request ).andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect( MockMvcResultMatchers.jsonPath("errors[0]", Matchers.containsStringIgnoringCase("Informar o valor da cotação")));
 
     }
 
 
     @Test
     @DisplayName("/API/RENDAVARIAVEL - DELETE - Excluir renda variável")
-    public void excluirRendaVariavel(){
+    public void excluirRendaVariavel() throws Exception{
+
+
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(API_RENDAVARIAVEL.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON);
+
+
+        mockMvc.perform( request ).andExpect( MockMvcResultMatchers.status().isOk());
+
+        BDDMockito.verify( service, Mockito.times(1)).excluir(Mockito.anyLong());
 
     }
 
     @Test
     @DisplayName("/API/RENDAVARIAVEL - DELETE - Retornar not found para renda variável inexistente")
-    public void excluirRendaVariavelInexistente(){
+    public void excluirRendaVariavelInexistente() throws Exception{
 
+
+        BDDMockito.doThrow( new RendaVariavelNotFound()).when(service).excluir(Mockito.anyLong());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(API_RENDAVARIAVEL.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON);
+
+
+        mockMvc.perform( request ).andExpect( MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath( "errors[0]", Matchers.containsStringIgnoringCase("Renda variável não econtrada na base de dados")));
+
+
+        BDDMockito.verify( repository, Mockito.never()).delete(Mockito.any(RendaVariavel.class));
     }
 
     public RendaVariavelRequestDTO createRendaVariavelRequestDTO() {

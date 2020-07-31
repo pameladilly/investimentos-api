@@ -255,7 +255,7 @@ public class RendaFixaControllerTest {
     }
 
     @Test
-    @DisplayName("/API/RENDAFIXA - DELETE - Deve retornar excluir um ativo de renda fixa")
+    @DisplayName("/API/RENDAFIXA - DELETE - Deve  excluir um ativo de renda fixa")
     public void excluirRendaFixa() throws Exception{
 
 
