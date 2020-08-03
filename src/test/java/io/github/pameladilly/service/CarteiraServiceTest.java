@@ -71,7 +71,7 @@ public class CarteiraServiceTest {
         Assertions.assertThat(carteira.getDescricao()).isEqualTo(carteiraSalva.getDescricao());
     }
 
-    private Carteira newCarteira(Usuario usuario) {
+    public static Carteira newCarteira(Usuario usuario) {
         return Carteira.builder()
                 .idCarteira(1L)
                 .dataCadastro(LocalDateTime.now())
