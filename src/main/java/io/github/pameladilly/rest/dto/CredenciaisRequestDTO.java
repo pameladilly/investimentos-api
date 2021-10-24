@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import springfox.documentation.annotations.ApiIgnore;
-
-import javax.validation.constraints.NotEmpty;
 
 @Data
 @NoArgsConstructor

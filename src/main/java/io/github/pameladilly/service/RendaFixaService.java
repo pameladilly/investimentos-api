@@ -1,6 +1,5 @@
 package io.github.pameladilly.service;
 
-import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.domain.entity.RendaFixa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

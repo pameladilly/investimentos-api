@@ -2,14 +2,10 @@ package io.github.pameladilly.rest.controller;
 
 import io.github.pameladilly.domain.entity.*;
 import io.github.pameladilly.domain.enums.TipoTransacao;
-import io.github.pameladilly.exception.ativo.AtivoNotFound;
-import io.github.pameladilly.exception.carteira.CarteiraNotFound;
-import io.github.pameladilly.exception.usuario.UsuarioNotFoundException;
 import io.github.pameladilly.rest.dto.TransacaoRequestDTO;
 import io.github.pameladilly.rest.dto.TransacaoResponseDTO;
 import io.github.pameladilly.service.*;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +16,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class TransacaoController {
 
-    private final ModelMapper modelMapper;
     private final TransacaoService service;
-    private final UsuarioService usuarioService;
     private final AtivoService ativoService;
     private final CarteiraService carteiraService;
 

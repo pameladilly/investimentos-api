@@ -1,6 +1,5 @@
 package io.github.pameladilly.service.impl;
 
-import io.github.pameladilly.domain.entity.RendaFixa;
 import io.github.pameladilly.domain.entity.RendaVariavel;
 import io.github.pameladilly.domain.repository.RendaVariavelRepository;
 import io.github.pameladilly.exception.rendavariavel.RendaVariavelNotFound;

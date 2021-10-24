@@ -1,7 +1,6 @@
 package io.github.pameladilly.service;
 
 import io.github.pameladilly.domain.entity.Usuario;
-import io.github.pameladilly.rest.dto.UsuarioRequestDTO;
 
 public interface UsuarioService {
 
@@ -18,7 +17,4 @@ public interface UsuarioService {
     Usuario getUsuarioById(Long id);
 
     Boolean existsById(Long id);
-
-
-
 }

@@ -1,6 +1,5 @@
 package io.github.pameladilly.service.impl;
 
-import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.domain.entity.RendaFixa;
 import io.github.pameladilly.domain.repository.RendaFixaRepository;
 import io.github.pameladilly.exception.RegraNegocioException;
@@ -11,9 +10,6 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDateTime;
 
 @Service
 public class RendaFixaImpl implements RendaFixaService {

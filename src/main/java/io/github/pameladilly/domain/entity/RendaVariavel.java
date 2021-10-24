@@ -1,12 +1,10 @@
 package io.github.pameladilly.domain.entity;
 
 import io.github.pameladilly.domain.enums.TipoAtivo;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import java.math.BigDecimal;

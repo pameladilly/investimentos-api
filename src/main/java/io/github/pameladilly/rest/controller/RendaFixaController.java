@@ -7,7 +7,6 @@ import io.github.pameladilly.rest.dto.RendaFixaRequestDTO;
 import io.github.pameladilly.rest.dto.RendaFixaResponseDTO;
 import io.github.pameladilly.service.RendaFixaService;
 import io.github.pameladilly.service.UsuarioService;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
