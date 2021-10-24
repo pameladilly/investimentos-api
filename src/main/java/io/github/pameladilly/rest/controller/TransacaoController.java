@@ -10,7 +10,6 @@ import io.github.pameladilly.rest.dto.TransacaoResponseDTO;
 import io.github.pameladilly.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.omg.CORBA.TRANSACTION_MODE;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
