@@ -3,15 +3,12 @@ package io.github.pameladilly.rest.controller;
 import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.rest.dto.CarteiraRequestDTO;
 import io.github.pameladilly.rest.dto.CarteiraResponseDTO;
-import io.github.pameladilly.rest.dto.UsuarioResponseDTO;
 import io.github.pameladilly.service.CarteiraService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

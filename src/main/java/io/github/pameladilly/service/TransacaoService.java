@@ -1,6 +1,5 @@
 package io.github.pameladilly.service;
 
-import io.github.pameladilly.domain.entity.RendaFixa;
 import io.github.pameladilly.domain.entity.Transacao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,11 +10,9 @@ public interface TransacaoService {
 
     Transacao atualizar(Transacao transacao);
 
-
     void excluir(Transacao transacao);
 
     void excluir(Long id);
-
 
     Page<Transacao> pesquisar(Transacao filter, Pageable pageRequest);
 

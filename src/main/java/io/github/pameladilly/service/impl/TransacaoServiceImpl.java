@@ -2,10 +2,7 @@ package io.github.pameladilly.service.impl;
 
 import io.github.pameladilly.domain.entity.Transacao;
 import io.github.pameladilly.domain.repository.TransacaoRepository;
-import io.github.pameladilly.exception.rendavariavel.RendaVariavelNotFound;
 import io.github.pameladilly.exception.transacao.TransacaoNotFound;
-import io.github.pameladilly.service.RendaFixaService;
-import io.github.pameladilly.service.RendaVariavelService;
 import io.github.pameladilly.service.TransacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -19,9 +16,6 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class TransacaoServiceImpl implements TransacaoService {
-
-    final private RendaFixaService rendaFixaService;
-    final private RendaVariavelService rendaVariavelService;
     final private TransacaoRepository repository;
 
     @Override

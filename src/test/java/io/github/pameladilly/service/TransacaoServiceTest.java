@@ -33,14 +33,9 @@ import java.util.Optional;
 @ActiveProfiles(value = "test")
 @ExtendWith(SpringExtension.class)
 public class TransacaoServiceTest {
-
-
     TransacaoService service;
-
     RendaFixaService rendaFixaService;
-
     RendaVariavelService rendaVariavelService;
-
 
     @MockBean
     TransacaoRepository repository;
@@ -55,7 +50,7 @@ public class TransacaoServiceTest {
     public void setUp(){
         rendaVariavelService = new RendaVariavelImpl(rendaVariavelRepository);
         rendaFixaService = new RendaFixaImpl(rendaFixaRepository);
-        service = new TransacaoServiceImpl(rendaFixaService, rendaVariavelService, repository);
+        service = new TransacaoServiceImpl(repository);
     }
 
     @Test

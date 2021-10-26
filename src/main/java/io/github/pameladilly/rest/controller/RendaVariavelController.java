@@ -1,10 +1,5 @@
 package io.github.pameladilly.rest.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import io.github.pameladilly.domain.entity.RendaVariavel;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.domain.enums.TipoAtivo;
@@ -13,19 +8,14 @@ import io.github.pameladilly.rest.dto.RendaVariavelRequestDTO;
 import io.github.pameladilly.rest.dto.RendaVariavelResponseDTO;
 import io.github.pameladilly.service.RendaVariavelService;
 import io.github.pameladilly.service.UsuarioService;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 

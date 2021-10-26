@@ -1,7 +1,5 @@
 package io.github.pameladilly.exception.carteira;
 
-import org.omg.SendingContext.RunTime;
-
 public class CarteiraNotFound extends RuntimeException {
 
 
