@@ -31,11 +31,13 @@ public class Carteira {
     private LocalDateTime dataCadastro;
 
     @Column(precision = 6, scale = 2)
-
     private BigDecimal rentabilidade;
 
     @UpdateTimestamp
     private LocalDateTime ultimaAtualizacao ;
+
+    @Column(precision = 6, scale = 2)
+    private BigDecimal total;
 
     @ManyToOne(targetEntity = Usuario.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")

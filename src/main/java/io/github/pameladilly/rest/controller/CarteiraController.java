@@ -1,6 +1,7 @@
 package io.github.pameladilly.rest.controller;
 
 import io.github.pameladilly.domain.entity.Carteira;
+import io.github.pameladilly.rest.dto.CarteiraConsolidadaRequestDTO;
 import io.github.pameladilly.rest.dto.CarteiraRequestDTO;
 import io.github.pameladilly.rest.dto.CarteiraResponseDTO;
 import io.github.pameladilly.service.CarteiraService;
@@ -55,6 +56,13 @@ public class CarteiraController {
                 .map(
                         entity -> modelMapper.map(entity, CarteiraResponseDTO.class)).collect(Collectors.toList());
         return new PageImpl<CarteiraResponseDTO>( list, pageRequest, result.getTotalElements());
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CarteiraResponseDTO consolidar(@PathVariable Long id, @RequestBody CarteiraConsolidadaRequestDTO carteiraConsolidadaRequestDTO) {
+
+        return null;
     }
 
     @DeleteMapping("{id}")

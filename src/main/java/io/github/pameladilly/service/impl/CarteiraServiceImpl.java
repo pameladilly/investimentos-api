@@ -93,4 +93,9 @@ public class CarteiraServiceImpl implements CarteiraService {
     public Carteira findById(Long id) {
         return repository.findById(id).orElseThrow(CarteiraNotFound::new);
     }
+
+    @Override
+    public Carteira consolidar(Carteira carteira) {
+        return null;
+    }
 }

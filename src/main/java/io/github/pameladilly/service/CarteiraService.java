@@ -20,4 +20,6 @@ public interface CarteiraService {
 
     Carteira findById(Long id);
 
+    Carteira consolidar(Carteira carteira);
+
 }

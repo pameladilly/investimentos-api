@@ -3,6 +3,7 @@ package io.github.pameladilly.service;
 
 import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.domain.entity.Usuario;
+import io.github.pameladilly.domain.repository.AtivoRepository;
 import io.github.pameladilly.domain.repository.CarteiraRepository;
 import io.github.pameladilly.domain.repository.UsuarioRepository;
 import io.github.pameladilly.exception.carteira.CarteiraNotFound;
@@ -43,6 +44,9 @@ public class CarteiraServiceTest {
 
     @MockBean
     UsuarioRepository usuariosRepository;
+
+//    @MockBean
+//    AtivoRepository ativoRepository;
 
     @BeforeEach
     public void setUp(){

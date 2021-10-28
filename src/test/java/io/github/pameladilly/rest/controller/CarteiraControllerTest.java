@@ -85,6 +85,7 @@ public class CarteiraControllerTest {
 
 
 
+
         CarteiraRequestDTO carteiraRequestDTO = newCarteiraRequestDTO();
         carteiraRequestDTO.setIdUsuario(null);
 
