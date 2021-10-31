@@ -40,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @WebMvcTest(controllers = CarteiraController.class)
-@SpringBootTest
 public class CarteiraControllerTest {
 
     final static String CARTEIRA_API = "/api/carteira";
