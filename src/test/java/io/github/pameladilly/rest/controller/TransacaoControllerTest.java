@@ -1,6 +1,5 @@
 package io.github.pameladilly.rest.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.domain.entity.RendaVariavel;
 import io.github.pameladilly.domain.entity.Transacao;
@@ -11,14 +10,12 @@ import io.github.pameladilly.exception.ativo.AtivoNotFound;
 import io.github.pameladilly.exception.carteira.CarteiraNotFound;
 import io.github.pameladilly.rest.dto.TransacaoRequestDTO;
 import io.github.pameladilly.service.*;
-import org.apache.tomcat.jni.Local;
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

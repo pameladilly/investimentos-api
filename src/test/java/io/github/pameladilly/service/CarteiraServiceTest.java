@@ -3,7 +3,6 @@ package io.github.pameladilly.service;
 
 import io.github.pameladilly.domain.entity.Carteira;
 import io.github.pameladilly.domain.entity.Usuario;
-import io.github.pameladilly.domain.repository.AtivoRepository;
 import io.github.pameladilly.domain.repository.CarteiraRepository;
 import io.github.pameladilly.domain.repository.UsuarioRepository;
 import io.github.pameladilly.exception.carteira.CarteiraNotFound;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Example;
@@ -28,9 +26,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")

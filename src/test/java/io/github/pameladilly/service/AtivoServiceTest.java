@@ -1,19 +1,16 @@
 package io.github.pameladilly.service;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.github.pameladilly.domain.entity.Ativo;
 import io.github.pameladilly.domain.entity.RendaFixa;
 import io.github.pameladilly.domain.entity.Usuario;
 import io.github.pameladilly.domain.repository.AtivoRepository;
 import io.github.pameladilly.exception.ativo.AtivoNotFound;
 import io.github.pameladilly.service.impl.AtivoServiceImpl;
-import io.github.pameladilly.service.impl.CarteiraServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
