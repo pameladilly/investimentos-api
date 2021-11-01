@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles("test")
 @DataJpaTest
+@ActiveProfiles("test")
 public class UsuariosTest {
 
 
