@@ -1,5 +1,8 @@
 FROM alpine:3.14
 
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
 RUN apk add --no-cache openjdk11
 
 WORKDIR /app
