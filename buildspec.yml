@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - (Get-ECRLoginCommand).Password | docker login --username AWS --password-stdin 975507422002.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t investimentos-api .
+      - docker tag investimentos-api:latest 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest
