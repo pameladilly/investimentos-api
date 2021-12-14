@@ -1,4 +1,5 @@
-FROM alpine:3.14
+#FROM alpine:3.14
+FROM public.ecr.aws/amazonlinux/amazonlinux:latest
 
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
