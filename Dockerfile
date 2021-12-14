@@ -1,8 +1,8 @@
 #FROM alpine:3.14
-FROM public.ecr.aws/amazonlinux/amazonlinux:latest
-#
-#RUN groupadd -S spring && adduser -S spring -G spring
-#USER spring:spring
+FROM public.ecr.aws/ubuntu/ubuntu:21.04
+
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
 
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
