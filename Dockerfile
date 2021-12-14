@@ -1,17 +1,25 @@
 FROM alpine:3.14
 
-USER root
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
 
-RUN apk add --no-cache openjdk11
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
 
-WORKDIR /app
+ENTRYPOINT ["java","-jar","/app.jar"]
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
-
-COPY src ./src
-
-EXPOSE 8080/tcp
-
-CMD ["./mvnw", "spring-boot:run"]
+#USER root
+#
+#RUN apk add --no-cache openjdk11
+#
+#WORKDIR /app
+#
+#COPY .mvn/ .mvn
+#COPY mvnw pom.xml ./
+#RUN ./mvnw dependency:go-offline
+#
+#COPY src ./src
+#
+#EXPOSE 8080/tcp
+#
+#CMD ["./mvnw", "spring-boot:run"]
