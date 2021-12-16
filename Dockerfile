@@ -3,6 +3,19 @@ FROM public.ecr.aws/ubuntu/ubuntu:21.04
 
 #RUN addgroup -S spring && adduser -S spring -G spring
 #USER spring:spring
+#RUN apt-get update && apt-get install -y \
+#    software-properties-common
+
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jdk && \
+    apt-get install -y ant && \
+    apt-get clean;
+
+
+#RUN apt-get update && \
+#    apt-get install ca-certificates-java && \
+#    apt-get clean && \
+#    update-ca-certificates -f;
 
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
