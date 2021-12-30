@@ -1,5 +1,7 @@
 version: 0.2
-
+env:
+  variables:
+    $REPOSITORY_URI: "975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api"
 phases:
   pre_build:
     commands:
@@ -12,9 +14,15 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t investimentos-api .
-      - docker tag investimentos-api:latest 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest
+      - docker push $REPOSITORY_URI:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"investimentos-devops", "imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+      - cat imagedefinitions.json
+  artifacts:
+    files:
+      - imagedefinitions.json
