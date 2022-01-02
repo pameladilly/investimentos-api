@@ -14,7 +14,7 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t investimentos-api .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
+      - docker tag investimentos-api:latest $REPOSITORY_URI:latest
   post_build:
     commands:
       - echo Build completed on `date`
