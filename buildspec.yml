@@ -19,7 +19,7 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $REPOSITORY_URI:latest
+      - docker push 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest
       - echo Writing image definitions file...
       - printf '[{"name":"investimentos-devops", "imageUri":"%s"}]' 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest > imagedefinitions.json
       - cat imagedefinitions.json
