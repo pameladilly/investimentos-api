@@ -14,14 +14,14 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t investimentos-api .
-      - docker tag investimentos-api:latest $REPOSITORY_URI:latest
+      - docker tag investimentos-api:latest 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"investimentos-devops", "imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+      - printf '[{"name":"investimentos-devops", "imageUri":"%s"}]' 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest > imagedefinitions.json
       - cat imagedefinitions.json
 artifacts:
   files:
