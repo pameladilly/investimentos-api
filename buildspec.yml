@@ -1,7 +1,7 @@
 version: 0.2
 env:
   variables:
-    $REPOSITORY_URI: "975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api"
+    $IMAGE_URI: "975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api"
 phases:
   pre_build:
     commands:
@@ -21,7 +21,7 @@ phases:
       - echo Pushing the Docker image...
       - docker push 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"investimentos-devops", "imageUri":"%s"}]' 975507422002.dkr.ecr.us-east-1.amazonaws.com/investimentos-api:latest > imagedefinitions.json
+      - printf '[{"name":"investimentos-devops", "imageUri":"$IMAGE_URI"}]'  > imagedefinitions.json
       - cat imagedefinitions.json
 artifacts:
   files:
